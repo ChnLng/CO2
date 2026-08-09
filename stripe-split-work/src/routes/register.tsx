@@ -1,24 +1,27 @@
-import { useState } from 'react';
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
-import { supabase } from '@/lib/supabase';
+import { useState } from "react";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { supabase } from "@/lib/supabase";
 
 function RegisterComponent() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [oauthProvider, setOauthProvider] = useState<
+    "google" | "github" | null
+  >(null);
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
-      alert('Les mots de passe ne correspondent pas');
+      alert("Les mots de passe ne correspondent pas");
       return;
     }
 
     if (password.length < 6) {
-      alert('Le mot de passe doit contenir au moins 6 caractères');
+      alert("Le mot de passe doit contenir au moins 6 caractères");
       return;
     }
 
@@ -28,15 +31,17 @@ function RegisterComponent() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { 
-          emailRedirectTo: window.location.origin
-        }
+        options: {
+          emailRedirectTo: window.location.origin,
+        },
       });
 
       if (error) throw error;
 
-      alert('Inscription réussie ! Veuillez vérifier votre email pour confirmer, puis connectez-vous.');
-      navigate({ to: '/login' });
+      alert(
+        "Inscription réussie ! Veuillez vérifier votre email pour confirmer, puis connectez-vous.",
+      );
+      navigate({ to: "/login" });
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -44,17 +49,23 @@ function RegisterComponent() {
     }
   };
 
-  const handleOAuthLogin = async (provider: 'google' | 'github') => {
-    setLoading(true);
+  const handleOAuthLogin = async (provider: "google" | "github") => {
+    setOauthProvider(provider);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin }
+        options: {
+          redirectTo: window.location.origin,
+          skipBrowserRedirect: true,
+        },
       });
       if (error) throw error;
+      if (!data.url)
+        throw new Error("Le service de connexion est indisponible.");
+      window.location.assign(data.url);
     } catch (error: any) {
       alert(error.message);
-      setLoading(false);
+      setOauthProvider(null);
     }
   };
 
@@ -70,34 +81,46 @@ function RegisterComponent() {
         </div>
 
         <div className="space-y-3 mb-6">
-          <button 
-            onClick={() => handleOAuthLogin('github')}
-            disabled={loading}
+          <button
+            onClick={() => handleOAuthLogin("github")}
+            disabled={loading || oauthProvider !== null}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-50"
           >
             <span>🐙</span>
-            <span className="text-gray-700">Continuer avec GitHub</span>
+            <span className="text-gray-700">
+              {oauthProvider === "github"
+                ? "Redirection vers GitHub…"
+                : "Continuer avec GitHub"}
+            </span>
           </button>
-          <button 
-            onClick={() => handleOAuthLogin('google')}
-            disabled={loading}
+          <button
+            onClick={() => handleOAuthLogin("google")}
+            disabled={loading || oauthProvider !== null}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-50"
           >
             <span>🔵</span>
-            <span className="text-gray-700">Continuer avec Google</span>
+            <span className="text-gray-700">
+              {oauthProvider === "google"
+                ? "Redirection vers Google…"
+                : "Continuer avec Google"}
+            </span>
           </button>
         </div>
 
         <div className="flex items-center gap-4 mb-6">
           <div className="flex-1 h-px bg-gray-200"></div>
-          <span className="text-sm text-gray-400">Ou s'inscrire avec email</span>
+          <span className="text-sm text-gray-400">
+            Ou s'inscrire avec email
+          </span>
           <div className="flex-1 h-px bg-gray-200"></div>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input 
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
               type="email"
               required
               value={email}
@@ -108,8 +131,10 @@ function RegisterComponent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-            <input 
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Mot de passe
+            </label>
+            <input
               type="password"
               required
               minLength={6}
@@ -121,8 +146,10 @@ function RegisterComponent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Confirmer le mot de passe</label>
-            <input 
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Confirmer le mot de passe
+            </label>
+            <input
               type="password"
               required
               minLength={6}
@@ -133,19 +160,22 @@ function RegisterComponent() {
             />
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="w-full bg-gradient-to-r from-rose-500 to-amber-500 text-white py-3 rounded-xl font-semibold hover:from-rose-600 hover:to-amber-600 transition disabled:opacity-50"
           >
-            {loading ? 'Inscription en cours...' : 'Créer un compte'}
+            {loading ? "Inscription en cours..." : "Créer un compte"}
           </button>
         </form>
 
         <div className="mt-8 text-center space-y-3">
           <p className="text-sm text-gray-600">
-            Déjà un compte ?{' '}
-            <Link to="/login" className="text-rose-600 hover:text-rose-700 font-semibold underline underline-offset-2">
+            Déjà un compte ?{" "}
+            <Link
+              to="/login"
+              className="text-rose-600 hover:text-rose-700 font-semibold underline underline-offset-2"
+            >
               Se connecter
             </Link>
           </p>
@@ -158,6 +188,6 @@ function RegisterComponent() {
   );
 }
 
-export const Route = createFileRoute('/register')({
+export const Route = createFileRoute("/register")({
   component: RegisterComponent,
 });

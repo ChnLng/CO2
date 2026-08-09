@@ -7,6 +7,9 @@ function LoginComponent() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+  const [oauthProvider, setOauthProvider] = useState<
+    "github" | "google" | null
+  >(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -33,38 +36,36 @@ function LoginComponent() {
         navigate({ to: "/" });
       }
     } catch (error: unknown) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Connexion impossible 无法登录",
-      );
+      alert(error instanceof Error ? error.message : "Connexion impossible.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleOAuthLogin = async (provider: "github" | "google") => {
-    setLoading(true);
+    setOauthProvider(provider);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin },
+        options: {
+          redirectTo: window.location.origin,
+          skipBrowserRedirect: true,
+        },
       });
       if (error) throw error;
+      if (!data.url)
+        throw new Error("Le service de connexion est indisponible.");
+      window.location.assign(data.url);
     } catch (error: unknown) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Connexion impossible 无法登录",
-      );
-      setLoading(false);
+      alert(error instanceof Error ? error.message : "Connexion impossible.");
+      setOauthProvider(null);
     }
   };
 
   const handleForgotPassword = async () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-      alert("Saisissez d’abord votre e-mail 请先填写邮箱地址");
+      alert("Saisissez d’abord votre adresse e-mail.");
       return;
     }
 
@@ -81,7 +82,7 @@ function LoginComponent() {
     // page cannot be used to discover registered e-mail addresses.
     if (error) console.error("Password reset request failed", error);
     alert(
-      "Si ce compte existe, un lien de réinitialisation vient d’être envoyé 如果该账号存在，重设密码链接已发送",
+      "Si ce compte existe, un lien de réinitialisation vient d’être envoyé.",
     );
   };
 
@@ -103,26 +104,34 @@ function LoginComponent() {
         <div className="space-y-3 mb-6">
           <button
             onClick={() => handleOAuthLogin("github")}
-            disabled={loading}
+            disabled={loading || oauthProvider !== null}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-50"
           >
             <span>🐙</span>
-            <span className="text-gray-700">Continuer avec GitHub</span>
+            <span className="text-gray-700">
+              {oauthProvider === "github"
+                ? "Redirection vers GitHub…"
+                : "Continuer avec GitHub"}
+            </span>
           </button>
           <button
             onClick={() => handleOAuthLogin("google")}
-            disabled={loading}
+            disabled={loading || oauthProvider !== null}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-50"
           >
             <span>🔵</span>
-            <span className="text-gray-700">Continuer avec Google</span>
+            <span className="text-gray-700">
+              {oauthProvider === "google"
+                ? "Redirection vers Google…"
+                : "Continuer avec Google"}
+            </span>
           </button>
         </div>
 
         <div className="flex items-center gap-4 mb-6">
           <div className="flex-1 h-px bg-gray-200"></div>
           <span className="text-sm text-gray-400">
-            Ou se connecter avec email
+            Ou se connecter avec une adresse e-mail
           </span>
           <div className="flex-1 h-px bg-gray-200"></div>
         </div>
@@ -161,9 +170,7 @@ function LoginComponent() {
                 disabled={loading || resetLoading}
                 className="text-sm font-semibold text-amber-700 underline underline-offset-2 hover:text-amber-800 disabled:opacity-50"
               >
-                {resetLoading
-                  ? "Envoi en cours  正在发送"
-                  : "Mot de passe oublié  忘记密码"}
+                {resetLoading ? "Envoi en cours…" : "Mot de passe oublié"}
               </button>
             </div>
           </div>

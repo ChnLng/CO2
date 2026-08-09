@@ -6,7 +6,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
-    "请在 .env 文件中检查 VITE_SUPABASE_URL 和 VITE_SUPABASE_ANON_KEY",
+    "Configuration Supabase incomplète : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis.",
   );
 }
 

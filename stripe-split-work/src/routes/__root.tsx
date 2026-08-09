@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
-import { fetchProducts, getMyWarranties } from '../lib/api';
-import { supabase } from '@/lib/supabase';
+import { fetchProducts, getMyWarranties } from "../lib/api";
+import { supabase } from "@/lib/supabase";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -14,14 +14,16 @@ import {
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
-// ... (NotFoundComponent 和 ErrorComponent 代码保持不变，省略以保持清晰)
+// Les composants NotFound et Error restent inchangés pour conserver ce fichier lisible.
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          Page not found
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
@@ -52,7 +54,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Something went wrong on our end. You can try refreshing or head back
+          home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -76,36 +79,53 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Jasper — Le capteur de CO₂ pour la maison" },
-      { name: "description", content: "Jasper, le détecteur de CO₂ en forme de pingouin : un air sain pour vos enfants, vos aînés et vos animaux. Design français, fabrication responsable." },
-      { name: "author", content: "Jasper" },
-      { property: "og:title", content: "Jasper — Un air sain à la maison" },
-      { property: "og:description", content: "Le capteur de CO₂ pensé pour les familles. Simple, joli, rassurant." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    head: () => ({
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: "Jasper — Le capteur de CO₂ pour la maison" },
+        {
+          name: "description",
+          content:
+            "Jasper, le détecteur de CO₂ en forme de pingouin : un air sain pour vos enfants, vos aînés et vos animaux. Design français, fabrication responsable.",
+        },
+        { name: "author", content: "Jasper" },
+        { property: "og:title", content: "Jasper — Un air sain à la maison" },
+        {
+          property: "og:description",
+          content:
+            "Le capteur de CO₂ pensé pour les familles. Simple, joli, rassurant.",
+        },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossOrigin: "anonymous",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap",
+        },
+      ],
+    }),
+    shellComponent: RootShell,
+    component: RootComponent,
+    notFoundComponent: NotFoundComponent,
+    errorComponent: ErrorComponent,
+  },
+);
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <HeadContent />
       </head>
@@ -122,50 +142,53 @@ function RootComponent() {
   const router = useRouter();
 
   useEffect(() => {
-    // 监听 OAuth 登录回调
+    // Écoute le retour de connexion OAuth.
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === "SIGNED_IN") {
-          console.log("用户已登录:", session?.user.email);
+          console.log("Utilisateur connecté :", session?.user.email);
 
-          // 确保用户 profile 存在
+          // S’assure que le profil utilisateur existe.
           if (session?.user) {
             try {
-              const { data: existingProfile, error: profileError } = await supabase
-                .from('profiles')
-                .select('id, role')
-                .eq('id', session.user.id)
-                .single();
-              
+              const { data: existingProfile, error: profileError } =
+                await supabase
+                  .from("profiles")
+                  .select("id, role")
+                  .eq("id", session.user.id)
+                  .single();
+
               let finalProfile = existingProfile;
-              
+
               if (profileError || !existingProfile) {
                 try {
-                  await supabase.from('profiles').insert({
+                  await supabase.from("profiles").insert({
                     id: session.user.id,
-                    full_name: session.user.user_metadata?.full_name || session.user.email,
-                    role: 'user'
+                    full_name:
+                      session.user.user_metadata?.full_name ||
+                      session.user.email,
+                    role: "user",
                   });
-                  finalProfile = { id: session.user.id, role: 'user' };
+                  finalProfile = { id: session.user.id, role: "user" };
                 } catch (insertError) {
-                  console.error("Profile 创建失败:", insertError);
+                  console.error("Création du profil impossible :", insertError);
                 }
               }
 
-              // 跳转到对应页面
-              if (finalProfile?.role === 'admin') {
-                await router.navigate({ to: '/admin' });
+              // Redirige vers l’espace correspondant.
+              if (finalProfile?.role === "admin") {
+                await router.navigate({ to: "/admin" });
               } else {
-                await router.navigate({ to: '/' });
+                await router.navigate({ to: "/" });
               }
             } catch (error) {
-              console.error("登录处理错误:", error);
-              // 即使出错也跳转回主页
-              await router.navigate({ to: '/' });
+              console.error("Erreur de traitement de la connexion :", error);
+              // En cas d’erreur, retourne malgré tout à l’accueil.
+              await router.navigate({ to: "/" });
             }
           }
         }
-      }
+      },
     );
 
     return () => authListener?.subscription.unsubscribe();

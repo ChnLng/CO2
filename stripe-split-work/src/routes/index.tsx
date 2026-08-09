@@ -45,9 +45,9 @@ function Index() {
     const params = new URLSearchParams(window.location.search);
     const payment = params.get("payment");
     if (payment === "success") {
-      toast.success("Paiement confirmé  支付成功");
+      toast.success("Paiement confirmé.");
     } else if (payment === "cancelled") {
-      toast.info("Paiement annulé  支付已取消");
+      toast.info("Paiement annulé.");
     }
     if (payment) {
       window.history.replaceState({}, "", window.location.pathname);

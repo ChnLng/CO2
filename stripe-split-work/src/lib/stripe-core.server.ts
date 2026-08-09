@@ -75,7 +75,7 @@ type FundRow = {
 function env(name: string): string {
   const value = process.env[name] ?? import.meta.env[name];
   if (!value || value.includes("placeholder")) {
-    throw new Error(`Configuration manquante : ${name} 配置缺失`);
+    throw new Error(`Configuration manquante : ${name}`);
   }
   return value;
 }
@@ -202,15 +202,13 @@ function validateCheckout(input: CheckoutInput) {
     !shipping.postalCode?.trim() ||
     !shipping.country?.trim()
   ) {
-    throw new Error(
-      "Tous les champs de livraison sont obligatoires 所有配送信息均为必填",
-    );
+    throw new Error("Tous les champs de livraison sont obligatoires.");
   }
   if (!/^\S+@\S+\.\S+$/.test(shipping.email)) {
-    throw new Error("Adresse e-mail invalide 邮箱格式无效");
+    throw new Error("Adresse e-mail invalide.");
   }
   if (!Array.isArray(input.items) || input.items.length === 0) {
-    throw new Error("Le panier est vide 购物车为空");
+    throw new Error("Le panier est vide.");
   }
   if (
     input.items.some(
@@ -221,7 +219,7 @@ function validateCheckout(input: CheckoutInput) {
         !EDITIONS.some((edition) => edition.id === item.editionId),
     )
   ) {
-    throw new Error("Contenu du panier invalide 购物车内容无效");
+    throw new Error("Contenu du panier invalide.");
   }
 }
 
@@ -245,7 +243,7 @@ export async function createCheckoutSessionCore(
       (edition) => edition.id === item.editionId,
     );
     const edition = EDITIONS[editionIndex];
-    if (!edition) throw new Error("Produit introuvable 找不到产品");
+    if (!edition) throw new Error("Produit introuvable.");
     return {
       productId: editionIndex + 1,
       name: edition.name,
@@ -277,10 +275,7 @@ export async function createCheckoutSessionCore(
       (!promo.valid_until || new Date(promo.valid_until).getTime() >= now) &&
       (!promo.max_uses ||
         Number(promo.times_used ?? 0) < Number(promo.max_uses));
-    if (!valid)
-      throw new Error(
-        "Code promotionnel invalide ou expiré 优惠码无效或已过期",
-      );
+    if (!valid) throw new Error("Code promotionnel invalide ou expiré.");
     promoId = Number(promo.id);
     discountPercent = Math.min(
       100,
@@ -291,8 +286,7 @@ export async function createCheckoutSessionCore(
   const discountCents = Math.round((subtotalCents * discountPercent) / 100);
   const deliveryCents = shippingCents(input.shipping.country);
   const totalCents = subtotalCents - discountCents + deliveryCents;
-  if (totalCents < 50)
-    throw new Error("Montant de commande invalide 订单金额无效");
+  if (totalCents < 50) throw new Error("Montant de commande invalide.");
 
   const { data: order, error: orderError } = await database
     .from("orders")
@@ -316,9 +310,7 @@ export async function createCheckoutSessionCore(
     .select("id")
     .single();
   if (orderError || !order)
-    throw new Error(
-      orderError?.message ?? "Création de commande impossible 无法创建订单",
-    );
+    throw new Error(orderError?.message ?? "Création de commande impossible.");
 
   const orderItems = trustedItems.map((item) => ({
     order_id: order.id,
@@ -376,10 +368,7 @@ export async function createCheckoutSessionCore(
     .update({ stripe_checkout_session_id: session.id })
     .eq("id", order.id);
 
-  if (!session.url)
-    throw new Error(
-      "URL de paiement Stripe indisponible Stripe 支付链接不可用",
-    );
+  if (!session.url) throw new Error("URL de paiement Stripe indisponible.");
   return { url: session.url, orderId: Number(order.id) };
 }
 
@@ -579,7 +568,7 @@ async function resumeOrCreateDistribution(
       admin1_share: centsToEuros(admin1Cents),
       admin2_share: centsToEuros(admin2Cents),
       status: "processing",
-      notes: "Répartition Stripe nette 50 % 50 %  Stripe 净入账五五分成",
+      notes: "Répartition Stripe nette 50 % 50 % Stripe 净入账五五分成",
       fund_ids: netBreakdown.map((fund) => fund.fundId),
       net_breakdown: netBreakdown,
       error_message: null,

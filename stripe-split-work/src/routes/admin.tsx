@@ -83,12 +83,12 @@ const date = (value: string) =>
   });
 
 const orderStatus: Record<string, string> = {
-  pending: "En attente  待处理",
-  paid: "Payée  已支付",
-  shipped: "Expédiée  已发货",
-  delivered: "Livrée  已送达",
-  cancelled: "Annulée  已取消",
-  refunded: "Remboursée  已退款",
+  pending: "En attente 待处理",
+  paid: "Payée 已支付",
+  shipped: "Expédiée 已发货",
+  delivered: "Livrée 已送达",
+  cancelled: "Annulée 已取消",
+  refunded: "Remboursée 已退款",
 };
 
 function AdminComponent() {
@@ -163,7 +163,7 @@ function AdminComponent() {
         setConnectError(
           error instanceof Error
             ? error.message
-            : "Configuration Stripe indisponible  Stripe 配置不可用",
+            : "Configuration Stripe indisponible Stripe 配置不可用",
         );
       }
     } catch (error) {
@@ -181,14 +181,14 @@ function AdminComponent() {
 
   async function handlePriceChange(id: number, price: number) {
     if (!Number.isFinite(price) || price <= 0) {
-      alert("Prix invalide  价格无效");
+      alert("Prix invalide 价格无效");
       return;
     }
     try {
       await updateProductPrice(id, price);
       await loadAllData();
     } catch {
-      alert("Mise à jour impossible  更新失败");
+      alert("Mise à jour impossible 更新失败");
     }
   }
 
@@ -196,7 +196,7 @@ function AdminComponent() {
     if (!session || distributing) return;
     if (
       !confirm(
-        "Confirmer la répartition nette à 50 %  50 % ?\n确认将 Stripe 净入账五五分成吗？",
+        "Confirmer la répartition nette à 50 % 50 % ?\n确认将 Stripe 净入账五五分成吗？",
       )
     )
       return;
@@ -206,14 +206,14 @@ function AdminComponent() {
         data: { accessToken: session.access_token },
       });
       alert(
-        `Répartition terminée  分配完成\nAdmin 1  管理员 1  ${money(result.admin1)}\nAdmin 2  管理员 2  ${money(result.admin2)}`,
+        `Répartition terminée 分配完成\nAdmin 1 管理员 1 ${money(result.admin1)}\nAdmin 2 管理员 2 ${money(result.admin2)}`,
       );
       await loadAllData();
     } catch (error) {
       alert(
         error instanceof Error
           ? error.message
-          : "Échec de la répartition  分配失败",
+          : "Échec de la répartition 分配失败",
       );
       await loadAllData();
     } finally {
@@ -280,7 +280,7 @@ function AdminComponent() {
       alert(
         error instanceof Error
           ? error.message
-          : "Traitement impossible  处理失败",
+          : "Traitement impossible 处理失败",
       );
     } finally {
       setRefundBusy(null);
@@ -318,17 +318,17 @@ function AdminComponent() {
   }
 
   const tabs: Array<{ key: ActiveTab; label: string; icon: typeof Split }> = [
-    { key: "overview", label: "Répartition  分账", icon: Split },
-    { key: "orders", label: "Commandes  订单", icon: ShoppingBag },
-    { key: "products", label: "Produits  产品", icon: Package },
+    { key: "overview", label: "Répartition 分账", icon: Split },
+    { key: "orders", label: "Commandes 订单", icon: ShoppingBag },
+    { key: "products", label: "Produits 产品", icon: Package },
     {
       key: "refunds",
-      label: `Remboursements  退款 ${pendingRefunds.filter((item) => item.status === "pending").length}`,
+      label: `Remboursements 退款 ${pendingRefunds.filter((item) => item.status === "pending").length}`,
       icon: RotateCcw,
     },
     {
       key: "account",
-      label: "Compte et mot de passe  账户和密码",
+      label: "Compte et mot de passe 账户和密码",
       icon: KeyRound,
     },
   ];
@@ -379,21 +379,21 @@ function AdminComponent() {
       <main className="mx-auto max-w-7xl px-5 py-6">
         <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
-            label="Ventes payées  已支付销售额"
+            label="Ventes payées 已支付销售额"
             value={money(totals.paidSales)}
           />
           <StatCard
-            label="Fonds gelés  冻结资金"
+            label="Fonds gelés 冻结资金"
             value={money(totals.frozen)}
             tone="amber"
           />
           <StatCard
-            label="Brut arrivé à échéance  已到期总额"
+            label="Brut arrivé à échéance 已到期总额"
             value={money(totals.available)}
             tone="green"
           />
           <StatCard
-            label="Solde Stripe disponible  Stripe 可用余额"
+            label="Solde Stripe disponible Stripe 可用余额"
             value={connect ? money(connect.availableBalance) : "—"}
             tone="blue"
           />
@@ -433,8 +433,7 @@ function AdminComponent() {
                     <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
                       Les frais Stripe sont retirés avant le partage. En cas de
                       centime impair, le second compte reçoit le centime
-                      restant.
-                      {"  "}Stripe
+                      restant. Stripe
                       手续费先扣除，净额再平分；如遇单数分，第二个账号多得一分。
                     </p>
                   </div>
@@ -442,8 +441,8 @@ function AdminComponent() {
                     className={`rounded-full px-3 py-1.5 text-xs font-bold ${connect?.mode === "live" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}
                   >
                     {connect?.mode === "live"
-                      ? "Mode réel  正式模式"
-                      : "Mode test  测试模式"}
+                      ? "Mode réel 正式模式"
+                      : "Mode test 测试模式"}
                   </span>
                 </div>
 
@@ -480,8 +479,8 @@ function AdminComponent() {
                     <Split className="h-5 w-5" />
                   )}
                   {distributing
-                    ? "Répartition en cours  正在分配"
-                    : "Distribuer les fonds arrivés à échéance  分配已到期资金"}
+                    ? "Répartition en cours 正在分配"
+                    : "Distribuer les fonds arrivés à échéance 分配已到期资金"}
                 </button>
                 <p className="mt-3 text-center text-xs text-slate-400">
                   Le bouton reprend automatiquement un transfert interrompu sans
@@ -494,18 +493,18 @@ function AdminComponent() {
                 <div className="mt-5 space-y-5">
                   <Step
                     number="1"
-                    title="Vérifier les deux comptes  检查两个账号"
-                    text="Les deux voyants doivent être verts  两个状态都应显示绿色"
+                    title="Vérifier les deux comptes 检查两个账号"
+                    text="Les deux voyants doivent être verts 两个状态都应显示绿色"
                   />
                   <Step
                     number="2"
-                    title="Attendre la fin du gel  等待冻结期结束"
-                    text="Les paiements deviennent distribuables après 14 jours  支付完成14天后可分配"
+                    title="Attendre la fin du gel 等待冻结期结束"
+                    text="Les paiements deviennent distribuables après 14 jours 支付完成14天后可分配"
                   />
                   <Step
                     number="3"
-                    title="Cliquer une seule fois  点击一次"
-                    text="Le système calcule le net et envoie exactement 50 % à chacun  系统自动计算净额并五五分成"
+                    title="Cliquer une seule fois 点击一次"
+                    text="Le système calcule le net et envoie exactement 50 % à chacun 系统自动计算净额并五五分成"
                   />
                 </div>
               </div>
@@ -516,7 +515,7 @@ function AdminComponent() {
                 Historique des répartitions 分账记录
               </h2>
               {dividends.length === 0 ? (
-                <Empty text="Aucune répartition pour le moment  暂无分账记录" />
+                <Empty text="Aucune répartition pour le moment 暂无分账记录" />
               ) : (
                 <div className="mt-4 overflow-x-auto">
                   <table className="w-full min-w-[700px] text-sm">
@@ -552,7 +551,7 @@ function AdminComponent() {
             <section className="rounded-2xl border border-slate-200 bg-white p-6">
               <h2 className="text-lg font-bold">Détail des fonds 资金明细</h2>
               {fundPool.length === 0 ? (
-                <Empty text="Aucun paiement Stripe reçu  尚未收到 Stripe 支付" />
+                <Empty text="Aucun paiement Stripe reçu 尚未收到 Stripe 支付" />
               ) : (
                 <div className="mt-4 grid gap-3 md:grid-cols-2">
                   {fundPool.map((fund) => (
@@ -584,7 +583,7 @@ function AdminComponent() {
           <section className="rounded-2xl border border-slate-200 bg-white p-6">
             <h2 className="text-lg font-bold">Toutes les commandes 所有订单</h2>
             {orders.length === 0 ? (
-              <Empty text="Aucune commande  暂无订单" />
+              <Empty text="Aucune commande 暂无订单" />
             ) : (
               <div className="mt-4 overflow-x-auto">
                 <table className="w-full min-w-[760px] text-sm">
@@ -670,7 +669,7 @@ function AdminComponent() {
               如资金已分账，退款会被阻止
             </p>
             {pendingRefunds.length === 0 ? (
-              <Empty text="Aucune demande  暂无申请" />
+              <Empty text="Aucune demande 暂无申请" />
             ) : (
               <div className="mt-5 space-y-3">
                 {pendingRefunds.map((refund) => (
@@ -692,10 +691,10 @@ function AdminComponent() {
                     <div className="mt-3 flex items-center justify-between">
                       <span className="text-xs font-semibold text-slate-500">
                         {refund.status === "pending"
-                          ? "En attente  待处理"
+                          ? "En attente 待处理"
                           : refund.status === "approved"
-                            ? "Approuvée  已批准"
-                            : "Refusée  已拒绝"}
+                            ? "Approuvée 已批准"
+                            : "Refusée 已拒绝"}
                       </span>
                       {refund.status === "pending" && (
                         <div className="flex gap-2">
@@ -847,12 +846,12 @@ function AccountCard({
         )}
       </div>
       <div className="mt-2 font-mono text-xs text-slate-500">
-        {status?.account || "Non configuré  未配置"}
+        {status?.account || "Non configuré 未配置"}
       </div>
       <div
         className={`mt-2 text-xs font-semibold ${ready ? "text-emerald-700" : "text-red-700"}`}
       >
-        {ready ? "Transferts actifs  转账已启用" : "Action requise  需要处理"}
+        {ready ? "Transferts actifs 转账已启用" : "Action requise 需要处理"}
       </div>
       {!ready && status?.configured && (
         <button
@@ -863,8 +862,8 @@ function AccountCard({
         >
           {activating && <RefreshCw className="h-3.5 w-3.5 animate-spin" />}
           {activating
-            ? "Ouverture de Stripe  正在打开 Stripe"
-            : `Activer mon compte ${number ?? ""}  完成我的账号验证`}
+            ? "Ouverture de Stripe 正在打开 Stripe"
+            : `Activer mon compte ${number ?? ""} 完成我的账号验证`}
         </button>
       )}
     </div>
@@ -886,8 +885,8 @@ function PrivatePeerCard({ ready }: { ready: boolean }) {
       </div>
       <div className="mt-2 text-xs font-semibold text-slate-500">
         {ready
-          ? "Compte prêt  账户已就绪"
-          : "Activation en attente  等待对方完成验证"}
+          ? "Compte prêt 账户已就绪"
+          : "Activation en attente 等待对方完成验证"}
       </div>
       <div className="mt-2 text-xs text-slate-400">
         Informations privées et masquées 隐私信息已隐藏
@@ -943,10 +942,10 @@ function DistributionStatus({ item }: { item: Dividend }) {
 
 function FundStatus({ status }: { status: string }) {
   const labels: Record<string, string> = {
-    frozen: "Gelé  冻结",
-    available: "Disponible  可分配",
-    distributed: "Distribué  已分配",
-    refunded: "Remboursé  已退款",
+    frozen: "Gelé 冻结",
+    available: "Disponible 可分配",
+    distributed: "Distribué 已分配",
+    refunded: "Remboursé 已退款",
   };
   return (
     <div className="mt-1 text-xs text-slate-500">

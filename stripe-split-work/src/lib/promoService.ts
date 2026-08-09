@@ -1,5 +1,5 @@
-// 优惠码相关服务
-import { supabase } from './supabase';
+// Service de gestion des codes promotionnels.
+import { supabase } from "./supabase";
 
 export type PromoCode = {
   id: number;
@@ -14,7 +14,7 @@ export type PromoCode = {
   updated_at: string;
 };
 
-// 验证优惠码
+// Vérifie qu’un code promotionnel peut être appliqué.
 export async function validatePromoCode(code: string): Promise<{
   valid: boolean;
   message: string;
@@ -24,59 +24,67 @@ export async function validatePromoCode(code: string): Promise<{
   const cleanCode = code.trim().toUpperCase();
 
   const { data, error } = await supabase
-    .from('promo_codes')
-    .select('*')
-    .eq('code', cleanCode)
+    .from("promo_codes")
+    .select("*")
+    .eq("code", cleanCode)
     .single();
 
   if (error || !data) {
-    return { valid: false, message: '优惠码不存在' };
+    return { valid: false, message: "Code promotionnel introuvable." };
   }
 
   const promo = data as PromoCode;
 
-  // 检查是否激活
+  // Vérifie si le code est actif.
   if (!promo.is_active) {
-    return { valid: false, message: '优惠码已失效' };
+    return { valid: false, message: "Ce code promotionnel est désactivé." };
   }
 
-  // 检查有效期
+  // Vérifie la période de validité.
   const now = new Date();
   if (promo.valid_from && new Date(promo.valid_from) > now) {
-    return { valid: false, message: '优惠码尚未生效' };
+    return {
+      valid: false,
+      message: "Ce code promotionnel n’est pas encore valide.",
+    };
   }
   if (promo.valid_until && new Date(promo.valid_until) < now) {
-    return { valid: false, message: '优惠码已过期' };
+    return { valid: false, message: "Ce code promotionnel a expiré." };
   }
 
-  // 检查使用次数
+  // Vérifie le nombre maximal d’utilisations.
   if (promo.max_uses && promo.times_used >= promo.max_uses) {
-    return { valid: false, message: '优惠码已达到最大使用次数' };
+    return {
+      valid: false,
+      message: "Ce code promotionnel a atteint sa limite d’utilisation.",
+    };
   }
 
   return {
     valid: true,
-    message: `优惠码已应用 -${promo.discount_percent}%`,
+    message: `Code promotionnel appliqué : -${promo.discount_percent} %`,
     percentOff: promo.discount_percent,
     id: promo.id,
   };
 }
 
-// 获取所有优惠码（管理员）
+// Récupère tous les codes promotionnels pour l’administration.
 export async function getAllPromoCodes(): Promise<PromoCode[]> {
   const { data, error } = await supabase
-    .from('promo_codes')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from("promo_codes")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (error) throw error;
   return data as PromoCode[];
 }
 
-// 创建优惠码（管理员）
-export async function createPromoCode(promo: Omit<PromoCode, 'id' | 'times_used' | 'created_at' | 'updated_at'>) {
+// Crée un code promotionnel depuis l’administration.
+export async function createPromoCode(
+  promo: Omit<PromoCode, "id" | "times_used" | "created_at" | "updated_at">,
+) {
   const { data, error } = await supabase
-    .from('promo_codes')
+    .from("promo_codes")
     .insert({
       ...promo,
       code: promo.code.toUpperCase(),
@@ -89,12 +97,15 @@ export async function createPromoCode(promo: Omit<PromoCode, 'id' | 'times_used'
   return data;
 }
 
-// 更新优惠码（管理员）
-export async function updatePromoCode(id: number, updates: Partial<Omit<PromoCode, 'id' | 'created_at' | 'updated_at'>>) {
+// Met à jour un code promotionnel depuis l’administration.
+export async function updatePromoCode(
+  id: number,
+  updates: Partial<Omit<PromoCode, "id" | "created_at" | "updated_at">>,
+) {
   const { data, error } = await supabase
-    .from('promo_codes')
+    .from("promo_codes")
     .update(updates)
-    .eq('id', id)
+    .eq("id", id)
     .select()
     .single();
 
@@ -102,12 +113,9 @@ export async function updatePromoCode(id: number, updates: Partial<Omit<PromoCod
   return data;
 }
 
-// 删除优惠码（管理员）
+// Supprime un code promotionnel depuis l’administration.
 export async function deletePromoCode(id: number) {
-  const { error } = await supabase
-    .from('promo_codes')
-    .delete()
-    .eq('id', id);
+  const { error } = await supabase.from("promo_codes").delete().eq("id", id);
 
   if (error) throw error;
 }

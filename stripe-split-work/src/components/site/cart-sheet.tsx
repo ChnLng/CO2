@@ -202,7 +202,7 @@ export function CartSheet() {
   );
 }
 
-// 法国主要城市和邮编的简单映射
+// Correspondance simplifiée entre principales villes françaises et codes postaux.
 const FR_POSTAL_CODE_CITIES: Record<string, string> = {
   "75001": "Paris",
   "75002": "Paris",
@@ -239,7 +239,7 @@ const FR_POSTAL_CODE_CITIES: Record<string, string> = {
   "67100": "Strasbourg",
 };
 
-// 国际运费配置
+// Configuration des frais de livraison internationaux.
 const INTERNATIONAL_SHIPPING_COSTS: Record<
   string,
   { cost: number; info: string }

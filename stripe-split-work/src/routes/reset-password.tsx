@@ -58,13 +58,11 @@ function ResetPasswordComponent() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (password.length < 10) {
-      alert(
-        "Le mot de passe doit contenir au moins 10 caractères 密码至少需要10个字符",
-      );
+      alert("Le mot de passe doit contenir au moins 10 caractères.");
       return;
     }
     if (password !== confirmation) {
-      alert("Les mots de passe sont différents 两次输入的密码不一致");
+      alert("Les mots de passe ne correspondent pas.");
       return;
     }
 
@@ -93,44 +91,41 @@ function ResetPasswordComponent() {
             )}
           </div>
           <h1 className="text-2xl font-bold text-gray-800">
-            Réinitialiser le mot de passe 重设密码
+            Réinitialiser le mot de passe
           </h1>
         </div>
 
         {checking ? (
           <div className="py-10 text-center text-sm text-gray-500">
             <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin" />
-            Vérification du lien 正在验证链接
+            Vérification du lien…
           </div>
         ) : completed ? (
           <div className="py-10 text-center">
             <p className="font-semibold text-emerald-700">
-              Mot de passe modifié 密码修改成功
+              Mot de passe modifié
             </p>
-            <p className="mt-2 text-sm text-gray-500">
-              Retour à la connexion 正在返回登录页
-            </p>
+            <p className="mt-2 text-sm text-gray-500">Retour à la connexion…</p>
           </div>
         ) : !sessionReady ? (
           <div className="py-8 text-center">
             <p className="font-semibold text-red-700">
-              Lien invalide ou expiré 链接无效或已过期
+              Lien invalide ou expiré
             </p>
             <p className="mt-2 text-sm text-gray-500">
-              Demandez un nouveau lien depuis la page de connexion
-              请在登录页重新发送链接
+              Demandez un nouveau lien depuis la page de connexion.
             </p>
             <Link
               to="/login"
               className="mt-5 inline-block font-semibold text-amber-700 underline underline-offset-2"
             >
-              Retour à la connexion 返回登录
+              Retour à la connexion
             </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-7 space-y-4">
             <label className="block text-sm font-semibold text-gray-700">
-              Nouveau mot de passe 新密码
+              Nouveau mot de passe
               <input
                 type="password"
                 autoComplete="new-password"
@@ -142,7 +137,7 @@ function ResetPasswordComponent() {
               />
             </label>
             <label className="block text-sm font-semibold text-gray-700">
-              Confirmer le mot de passe 确认新密码
+              Confirmer le mot de passe
               <input
                 type="password"
                 autoComplete="new-password"
@@ -159,7 +154,7 @@ function ResetPasswordComponent() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 py-3 font-semibold text-white hover:from-amber-600 hover:to-orange-600 disabled:opacity-50"
             >
               {saving && <RefreshCw className="h-4 w-4 animate-spin" />}
-              Enregistrer le nouveau mot de passe 保存新密码
+              Enregistrer le nouveau mot de passe
             </button>
           </form>
         )}
