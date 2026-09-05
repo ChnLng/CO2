@@ -15,19 +15,19 @@ export type Edition = {
 /** A deliberate single-SKU launch: easier to manufacture, explain and support. */
 export const EDITIONS: Edition[] = [
   {
-    id: "jasper-clair",
-    name: "Jasper Clair",
+    id: "jasper-signal",
+    name: "Jasper Signal",
     audience: "Pour la maison",
-    price: 89,
-    compareAt: 99,
-    weight_grams: 220,
-    tagline: "Le signal simple qui vous rappelle d’aérer.",
+    price: 59,
+    compareAt: 69,
+    weight_grams: 180,
+    tagline: "Un anneau de lumière pour savoir quand aérer.",
     copy:
-      "Un écran lisible, un halo de couleur et aucune application à installer : Jasper Clair aide toute la famille à savoir quand renouveler l’air.",
+      "Un grand anneau de lumière, un vrai capteur de CO₂ et aucune application à installer : Jasper Signal aide toute la famille à savoir quand renouveler l’air.",
     features: [
-      "Lecture du CO₂, de la température et de l’humidité",
-      "Grand affichage lisible d’un coup d’œil",
-      "Signal vert, ambre ou rouge, sans alarme agressive",
+      "Anneau lumineux vert, ambre ou rouge, sans alarme agressive",
+      "Capteur de CO₂ dédié, à valider avant production",
+      "Alimentation USB-C, sans Wi-Fi ni compte",
       "Utilisable sans compte ni téléphone",
     ],
     safety:
