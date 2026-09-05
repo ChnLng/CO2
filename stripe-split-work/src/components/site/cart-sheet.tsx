@@ -70,7 +70,7 @@ export function CartSheet() {
                 <ShoppingBag className="h-8 w-8 mb-3 opacity-40" />
                 <p className="text-sm">Votre panier est vide.</p>
                 <p className="text-xs mt-1">
-                  Choisissez une édition dans « Pour qui » ou « Commander ».
+                  Ajoutez Jasper Clair depuis la page d’accueil.
                 </p>
               </div>
             ) : (
@@ -170,10 +170,6 @@ export function CartSheet() {
                     <span>−{euros(discount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Livraison</span>
-                  <span>Offerte</span>
-                </div>
                 <div className="flex justify-between font-display font-semibold text-base pt-1.5 border-t border-ink/10">
                   <span>Total</span>
                   <span>{euros(total)}</span>
@@ -187,8 +183,8 @@ export function CartSheet() {
                 Passer commande →
               </button>
               <p className="text-[11px] text-center text-muted-foreground">
-                Paiement sécurisé · Livraison 3 jours · Retours gratuits 30
-                jours
+                Les conditions, frais et dates de livraison de la première série
+                seront confirmés avant l’ouverture commerciale.
               </p>
             </div>
           )}
