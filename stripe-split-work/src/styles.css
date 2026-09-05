@@ -80,3 +80,35 @@
   background-image: radial-gradient(color-mix(in oklab, var(--ink) 4%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
+
+@keyframes jasper-rise {
+  0% { transform: translate3d(0, 34px, 0) scale(.72); opacity: 0; }
+  18% { opacity: .48; }
+  82% { opacity: .18; }
+  100% { transform: translate3d(var(--drift), -142px, 0) scale(1.08); opacity: 0; }
+}
+
+.jasper-bubble {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--mint-soft) 48%, white);
+  box-shadow: inset 2px 2px 7px rgb(255 255 255 / 70%);
+  animation: jasper-rise 5.8s ease-in infinite;
+}
+
+.jasper-bubble-one { --drift: 8px; right: 5px; height: 12px; width: 12px; animation-delay: -1.6s; }
+.jasper-bubble-two { --drift: -13px; right: 26px; height: 7px; width: 7px; animation-delay: -3.5s; animation-duration: 6.6s; }
+.jasper-bubble-three { --drift: 3px; right: 17px; height: 18px; width: 18px; animation-delay: -4.7s; animation-duration: 7.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jasper-bubble { animation: none; opacity: .25; }
+}
+
+@media (max-height: 520px) and (max-width: 1023px) {
+  .jasper-hero-copy, .jasper-hero-stats { display: none; }
+  .jasper-hero-actions { margin-top: 1.25rem; }
+  .jasper-hero-actions button:last-child { display: none; }
+}

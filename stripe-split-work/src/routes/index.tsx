@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Menu, ShoppingBag, Wind } from "lucide-react";
-import { useEffect, useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, Check, ShoppingBag } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import jasperClairHero from "@/assets/jasper-clair-hero.png";
 import { CartSheet } from "@/components/site/cart-sheet";
 import { EDITIONS } from "@/components/site/editions";
@@ -20,107 +20,98 @@ export const Route = createFileRoute("/")({
 });
 
 const edition = EDITIONS[0];
+const SECTIONS = ["Accueil", "Le signal", "La maison", "L’objet", "Réserver"];
 
 function Index() {
-  const { addItem, setOpen, itemCount } = useCart();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [active, setActive] = useState(0);
+  const lockRef = useRef(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("payment") === "success") toast.success("Paiement confirmé.");
     if (params.get("payment") === "cancelled") toast.info("Paiement annulé.");
     if (params.has("payment")) window.history.replaceState({}, "", window.location.pathname);
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
-      setSession(next);
-      setUser(next?.user ?? null);
-    });
-    return () => listener.subscription.unsubscribe();
+    const wheel = (event: WheelEvent) => {
+      if (lockRef.current || Math.abs(event.deltaY) < 25) return;
+      lockRef.current = true;
+      setActive((value) => Math.min(SECTIONS.length - 1, Math.max(0, value + (event.deltaY > 0 ? 1 : -1))));
+      window.setTimeout(() => (lockRef.current = false), 750);
+    };
+    const key = (event: KeyboardEvent) => {
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) { event.preventDefault(); setActive((value) => Math.min(SECTIONS.length - 1, value + 1)); }
+      if (["ArrowUp", "PageUp"].includes(event.key)) { event.preventDefault(); setActive((value) => Math.max(0, value - 1)); }
+    };
+    window.addEventListener("wheel", wheel, { passive: true });
+    window.addEventListener("keydown", key);
+    return () => { window.removeEventListener("wheel", wheel); window.removeEventListener("keydown", key); };
   }, []);
 
-  const addToCart = () => {
-    addItem(edition);
-    setOpen(true);
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    toast.success("Vous êtes déconnecté(e).");
-  };
-
-  return (
-    <main className="min-h-screen bg-[#f8f5ed] text-[#20382a]">
-      <header className="sticky top-0 z-40 border-b border-[#20382a]/10 bg-[#f8f5ed]/95 backdrop-blur">
-        <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5">
-          <a href="#accueil" className="flex items-center gap-2 text-lg font-black tracking-tight">
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#20382a] text-[#e5d98a]">J</span>
-            Jasper
-          </a>
-          <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-            <a href="#principe" className="hover:text-[#d36b35]">Le principe</a>
-            <a href="#pour-qui" className="hover:text-[#d36b35]">Pour qui</a>
-            <a href="#design" className="hover:text-[#d36b35]">Le design</a>
-          </nav>
-          <div className="flex items-center gap-2">
-            {session ? (
-              <>
-                <Link to="/account" className="hidden rounded-full px-3 py-2 text-sm font-medium hover:bg-[#20382a]/5 sm:block">Mon compte</Link>
-                {user?.email === "visdar@outlook.fr" || user?.email === "anna.mecatronics@gmail.com" ? <Link to="/admin" className="hidden rounded-full px-3 py-2 text-sm font-medium hover:bg-[#20382a]/5 sm:block">Administration</Link> : null}
-                <button onClick={signOut} className="hidden rounded-full px-3 py-2 text-sm font-medium hover:bg-[#20382a]/5 sm:block">Déconnexion</button>
-              </>
-            ) : <Link to="/login" className="hidden rounded-full px-3 py-2 text-sm font-medium hover:bg-[#20382a]/5 sm:block">Connexion</Link>}
-            <button onClick={() => setOpen(true)} className="relative grid h-10 w-10 place-items-center rounded-full bg-[#20382a] text-white" aria-label="Ouvrir le panier">
-              <ShoppingBag className="h-4 w-4" />
-              {itemCount > 0 ? <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[#d36b35] text-[10px] font-bold">{itemCount}</span> : null}
-            </button>
-            <button onClick={() => setMenuOpen(!menuOpen)} className="grid h-10 w-10 place-items-center rounded-full border border-[#20382a]/15 md:hidden" aria-label="Ouvrir le menu"><Menu className="h-4 w-4" /></button>
-          </div>
-        </div>
-        {menuOpen ? <nav className="border-t border-[#20382a]/10 px-5 py-4 md:hidden"><div className="mx-auto flex max-w-6xl flex-col gap-3 text-sm font-medium"><a onClick={() => setMenuOpen(false)} href="#principe">Le principe</a><a onClick={() => setMenuOpen(false)} href="#pour-qui">Pour qui</a><a onClick={() => setMenuOpen(false)} href="#design">Le design</a><Link onClick={() => setMenuOpen(false)} to={session ? "/account" : "/login"}>{session ? "Mon compte" : "Connexion"}</Link></div></nav> : null}
-      </header>
-
-      <section id="accueil" className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1fr_1.04fr] md:items-center md:py-20">
-        <div>
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#e5d98a]/45 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em]"><Wind className="h-4 w-4" /> Jasper Clair · première série</p>
-          <h1 className="max-w-xl text-5xl font-black leading-[0.98] tracking-[-0.05em] sm:text-6xl">Vous n’avez pas besoin d’une application pour savoir quand ouvrir la fenêtre.</h1>
-          <p className="mt-7 max-w-lg text-lg leading-relaxed text-[#20382a]/75">Jasper Clair rend l’air de la maison facile à lire : un grand chiffre, une couleur, puis le bon réflexe.</p>
-          <div className="mt-8 flex flex-wrap gap-3"><button onClick={addToCart} className="inline-flex items-center gap-2 rounded-full bg-[#d36b35] px-6 py-3.5 font-bold text-white transition hover:bg-[#b95428]">Précommander à 89 € <ArrowRight className="h-4 w-4" /></button><a href="#principe" className="rounded-full border border-[#20382a]/20 px-6 py-3.5 font-bold hover:bg-white">Voir le principe</a></div>
-          <p className="mt-5 text-sm text-[#20382a]/60">Prix fondateur · sans application obligatoire · pour toute la maison</p>
-        </div>
-        <figure className="overflow-hidden rounded-[2rem] bg-[#ddd5c1] shadow-[0_24px_70px_rgba(32,56,42,.16)]"><img src={jasperClairHero} alt="Jasper Clair posé dans un salon lumineux" className="h-full min-h-[340px] w-full object-cover" /></figure>
-      </section>
-
-      <section id="principe" className="border-y border-[#20382a]/10 bg-white py-16">
-        <div className="mx-auto max-w-6xl px-5"><div className="max-w-2xl"><p className="text-sm font-bold uppercase tracking-[0.15em] text-[#d36b35]">Un signal, pas un tableau de bord</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Regarder. Aérer. Revenir à sa journée.</h2><p className="mt-5 text-lg leading-relaxed text-[#20382a]/75">Le CO₂ est un indicateur du confinement de l’air. Jasper ne pose pas de diagnostic médical : il vous aide simplement à repérer le bon moment pour renouveler l’air.</p></div>
-          <div className="mt-10 grid gap-4 md:grid-cols-3"><Signal colour="bg-[#4f9d69]" title="Vert" range="Moins de 800 ppm" copy="L’air est suffisamment renouvelé." /><Signal colour="bg-[#e0a43d]" title="Ambre" range="800 à 1 400 ppm" copy="Pensez à ouvrir quelques minutes." /><Signal colour="bg-[#c95842]" title="Rouge" range="Plus de 1 400 ppm" copy="Aérez maintenant si vous le pouvez." /></div>
-        </div>
-      </section>
-
-      <section id="pour-qui" className="mx-auto max-w-6xl px-5 py-18"><div className="grid gap-10 md:grid-cols-[.8fr_1.2fr]"><div><p className="text-sm font-bold uppercase tracking-[0.15em] text-[#d36b35]">Pensé pour les vraies journées</p><h2 className="mt-3 text-4xl font-black tracking-tight">Une seule version. Trois moments où elle compte.</h2></div><div className="grid gap-4 sm:grid-cols-3"><UseCase number="01" title="La chambre" copy="Quand une porte reste fermée toute la nuit." /><UseCase number="02" title="Le bureau" copy="Quand on perd le fil au milieu d’une longue visio." /><UseCase number="03" title="Le salon" copy="Quand toute la famille se retrouve." /></div></div></section>
-
-      <section id="design" className="bg-[#20382a] py-18 text-[#f8f5ed]"><div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-2"><div><p className="text-sm font-bold uppercase tracking-[0.15em] text-[#e5d98a]">Le bon objet pour commencer</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Moins de plastique spectaculaire. Plus d’objet que l’on garde.</h2><p className="mt-6 max-w-xl text-lg leading-relaxed text-[#f8f5ed]/75">Un format compact, une face rigide lisible et un bord doux protégeant les mains et le mobilier. Le choix d’une seule forme réduit les coûts de départ sans sacrifier la présence sur une table de chevet.</p></div><div className="grid content-start gap-4"><DesignPoint title="Un bord doux, remplaçable" copy="Une structure stable et une protection souple séparée : plus simple à fabriquer et à entretenir qu’une coque entièrement souple." /><DesignPoint title="Sans écran de téléphone" copy="Le chiffre utile reste dans la pièce, visible de tous, sans compte ni notifications." /><DesignPoint title="Capteur à valider avant vente" copy="L’architecture visée repose sur un capteur NDIR. Les performances finales seront mesurées et publiées avant commercialisation." /></div></div></section>
-
-      <section id="commander" className="mx-auto max-w-6xl px-5 py-18"><div className="rounded-[2rem] border border-[#20382a]/15 bg-white p-7 shadow-sm md:flex md:items-center md:justify-between md:p-10"><div><p className="text-sm font-bold uppercase tracking-[0.15em] text-[#d36b35]">Première série</p><h2 className="mt-2 text-4xl font-black tracking-tight">{edition.name}</h2><p className="mt-3 max-w-xl text-[#20382a]/70">{edition.copy}</p><ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{edition.features.map((feature) => <li key={feature} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#4f9d69]" />{feature}</li>)}</ul></div><div className="mt-7 min-w-52 rounded-3xl bg-[#f8f5ed] p-6 md:mt-0"><p className="text-sm text-[#20382a]/60">Prix fondateur</p><p className="mt-1 text-4xl font-black">89 € <span className="text-lg font-medium text-[#20382a]/40 line-through">99 €</span></p><button onClick={addToCart} className="mt-5 w-full rounded-full bg-[#d36b35] px-5 py-3 font-bold text-white hover:bg-[#b95428]">Précommander</button></div></div><p className="mx-auto mt-5 max-w-3xl text-center text-xs leading-relaxed text-[#20382a]/55">Avant l’ouverture commerciale, les caractéristiques définitives, les conformités, les dates et les conditions de livraison seront confirmées de façon transparente.</p></section>
-
-      <footer className="border-t border-[#20382a]/10 px-5 py-9 text-sm text-[#20382a]/65"><div className="mx-auto flex max-w-6xl flex-col justify-between gap-4 sm:flex-row"><p>© {new Date().getFullYear()} Jasper · Une maison plus facile à aérer.</p><div className="flex gap-4"><Link to="/account">Mon compte</Link><Link to="/orders">Mes commandes</Link>{user?.email === "visdar@outlook.fr" || user?.email === "anna.mecatronics@gmail.com" ? <Link to="/admin">Administration</Link> : null}</div></div></footer>
-      <CartSheet />
+  return <div className="relative h-screen w-screen overflow-hidden bg-cream text-ink bg-noise">
+    <TopBar />
+    <SideNav active={active} onChange={setActive} />
+    <main className="absolute inset-0 pb-14 pt-16">
+      <div className="h-full transition-transform duration-700 ease-[cubic-bezier(.65,0,.35,1)]" style={{ transform: `translateY(-${active * 100}%)` }}>
+        <Slide><Hero onReserve={() => setActive(4)} onMore={() => setActive(1)} /></Slide>
+        <Slide><Signal /></Slide>
+        <Slide><Home /></Slide>
+        <Slide><Object /></Slide>
+        <Slide><Reserve /></Slide>
+      </div>
     </main>
-  );
+    <Footer />
+    <CartSheet />
+  </div>;
 }
 
-function Signal({ colour, title, range, copy }: { colour: string; title: string; range: string; copy: string }) {
-  return <article className="rounded-3xl border border-[#20382a]/10 p-6"><span className={`mb-8 block h-4 w-4 rounded-full ${colour}`} /><h3 className="text-2xl font-black">{title}</h3><p className="mt-1 font-semibold">{range}</p><p className="mt-4 text-sm leading-relaxed text-[#20382a]/65">{copy}</p></article>;
+function Slide({ children }: { children: React.ReactNode }) { return <section className="h-full w-full">{children}</section>; }
+
+function TopBar() {
+  const { count, openCart } = useCart();
+  const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  useEffect(() => {
+    const hydrate = async (session: Session | null) => {
+      setUser(session?.user ?? null);
+      if (!session?.user) return setRole(null);
+      const { data } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
+      setRole(data?.role ?? null);
+    };
+    supabase.auth.getSession().then(({ data }) => hydrate(data.session));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => hydrate(session));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+  const logout = async () => { await supabase.auth.signOut(); toast.success("Vous êtes déconnecté(e)."); };
+  return <header className="absolute inset-x-0 top-0 z-30 flex h-16 items-center justify-between px-7 md:px-14">
+    <div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-full bg-ink text-sm font-black text-mint">J</span><span className="font-display text-lg font-semibold tracking-tight">Jasper</span></div>
+    <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+      {user ? <>{role === "admin" ? <a href="/admin" className="hover:text-ink">Administration</a> : null}<a href="/orders" className="hover:text-ink">Commandes</a><button onClick={logout} className="hover:text-ink">Déconnexion</button></> : <><a href="/login" className="hover:text-ink">Connexion</a><a href="/register" className="rounded-full bg-ink px-4 py-1.5 text-xs text-cream">Créer un compte</a></>}
+    </nav>
+    <button onClick={openCart} className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-cream shadow-soft transition hover:scale-[1.02]"><ShoppingBag className="h-3.5 w-3.5" /> Panier · {count}</button>
+  </header>;
 }
 
-function UseCase({ number, title, copy }: { number: string; title: string; copy: string }) {
-  return <article className="rounded-3xl bg-white p-5 shadow-sm"><p className="text-xs font-black tracking-[.14em] text-[#d36b35]">{number}</p><h3 className="mt-8 text-xl font-black">{title}</h3><p className="mt-2 text-sm leading-relaxed text-[#20382a]/65">{copy}</p></article>;
+function SideNav({ active, onChange }: { active: number; onChange: (value: number) => void }) {
+  return <div className="absolute right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-4 md:flex">{SECTIONS.map((label, index) => <button key={label} onClick={() => onChange(index)} className="group flex items-center justify-end gap-3" aria-label={label}><span className={`text-xs font-semibold transition-all ${active === index ? "text-ink opacity-100" : "text-muted-foreground opacity-0 group-hover:opacity-70"}`}>{String(index + 1).padStart(2, "0")} · {label}</span><span className={`block rounded-full transition-all ${active === index ? "h-8 w-1.5 bg-ink" : "h-1.5 w-1.5 bg-ink/30"}`} /></button>)}<div className="pointer-events-none absolute -bottom-44 -right-2 h-40 w-14 overflow-hidden"><i className="jasper-bubble jasper-bubble-one" /><i className="jasper-bubble jasper-bubble-two" /><i className="jasper-bubble jasper-bubble-three" /></div></div>;
 }
 
-function DesignPoint({ title, copy }: { title: string; copy: string }) {
-  return <article className="border-l-2 border-[#e5d98a] pl-5"><h3 className="font-black">{title}</h3><p className="mt-1 text-sm leading-relaxed text-[#f8f5ed]/70">{copy}</p></article>;
+function Hero({ onReserve, onMore }: { onReserve: () => void; onMore: () => void }) {
+  return <div className="relative grid h-full grid-cols-1 items-center gap-5 overflow-hidden px-7 md:px-14 lg:grid-cols-[.94fr_1.06fr] lg:px-24">
+    <div className="jasper-hero-content z-10 max-w-xl"><p className="inline-flex rounded-full border border-ink/10 bg-white/65 px-4 py-2 text-[11px] font-semibold uppercase tracking-[.18em] text-muted-foreground">Jasper Clair · première série</p><h1 className="mt-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">L’air de votre maison.<br /><span className="italic text-primary">Enfin lisible.</span></h1><p className="jasper-hero-copy mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">Un objet calme qui vous indique simplement le moment d’aérer — dans la chambre, au bureau, au salon.</p><div className="jasper-hero-actions mt-8 flex flex-wrap gap-3"><button onClick={onReserve} className="rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-cream shadow-soft transition hover:scale-[1.02]">Découvrir la première série</button><button onClick={onMore} className="rounded-full border border-ink/15 bg-white/70 px-6 py-3.5 text-sm font-semibold transition hover:bg-white">Voir comment il agit</button></div><div className="jasper-hero-stats mt-9 flex gap-7 text-xs text-muted-foreground"><span><b className="block font-display text-xl text-ink">Un regard</b>pour comprendre</span><span><b className="block font-display text-xl text-ink">Sans App</b>obligatoire</span><span><b className="block font-display text-xl text-ink">89 €</b>prix fondateur</span></div></div>
+    <div className="pointer-events-none absolute -bottom-12 -right-20 h-[31%] w-[70%] overflow-hidden rounded-[2.25rem] opacity-45 shadow-soft sm:-right-10 sm:h-[35%] sm:w-[54%] lg:hidden"><img src={jasperClairHero} alt="" className="h-full w-full object-cover" /></div><div className="relative hidden h-full items-center justify-center lg:flex"><div className="absolute inset-6 rounded-[3.25rem] bg-gradient-to-br from-sky/55 via-mint-soft/65 to-blush/45 blur-2xl" /><div className="relative h-[77%] w-[86%] overflow-hidden rounded-[2.75rem] bg-white shadow-soft"><img src={jasperClairHero} alt="Jasper Clair dans une maison lumineuse" className="h-full w-full object-cover" /></div><div className="absolute left-0 top-[16%] rounded-3xl bg-white/95 px-4 py-3 shadow-soft rotate-[-4deg]"><p className="text-[11px] text-muted-foreground">Dans la chambre</p><p className="font-display text-sm font-semibold">Une lumière suffit.</p></div><div className="absolute bottom-[15%] right-0 rounded-3xl bg-white/95 px-4 py-3 shadow-soft rotate-[3deg]"><p className="text-[11px] text-muted-foreground">Sans notification</p><p className="font-display text-sm font-semibold">Sans anxiété.</p></div></div>
+  </div>;
 }
+
+function Signal() {
+  const states = [{ label: "Respirer", range: "moins de 800 ppm", color: "bg-mint", copy: "L’air est suffisamment renouvelé." }, { label: "Ouvrir", range: "800 à 1 400 ppm", color: "bg-warn", copy: "Quelques minutes suffisent souvent." }, { label: "Aérer", range: "plus de 1 400 ppm", color: "bg-danger", copy: "Le signal vous invite à agir." }];
+  return <div className="grid h-full grid-cols-1 items-center gap-8 px-7 md:px-14 lg:grid-cols-[.9fr_1.1fr] lg:px-24"><div className="max-w-lg"><p className="text-xs font-semibold uppercase tracking-[.2em] text-primary">01 — Le signal</p><h2 className="mt-3 font-display text-5xl font-semibold leading-tight">Une couleur.<br /><span className="italic">Un geste.</span></h2><p className="mt-5 max-w-md leading-relaxed text-muted-foreground">Pas de chiffres qui vous inquiètent, pas d’application qui vous sollicite. Jasper crée un rituel simple : regarder, ouvrir, continuer sa journée.</p></div><div className="grid grid-cols-3 gap-3 pr-0 md:pr-20">{states.map((state, index) => <article key={state.label} className="rounded-[2rem] border border-ink/5 bg-white/90 p-4 text-center shadow-soft md:p-5"><div className="mx-auto flex h-24 w-20 items-end justify-center overflow-hidden rounded-t-[999px] rounded-b-3xl bg-ink pb-3 md:h-32 md:w-24"><span className={`h-12 w-12 rounded-full ${state.color} shadow-glow`} /></div><p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Étape {index + 1}</p><h3 className="mt-1 font-display text-lg font-semibold">{state.label}</h3><p className="text-[11px] text-muted-foreground">{state.range}</p><p className="mt-2 hidden text-xs leading-relaxed text-muted-foreground md:block">{state.copy}</p></article>)}</div></div>;
+}
+
+function Home() { return <div className="grid h-full grid-cols-1 items-center gap-8 px-7 md:px-14 lg:grid-cols-[1.1fr_.9fr] lg:px-24"><div className="relative order-2 h-[38vh] overflow-hidden rounded-[2.75rem] bg-sky/40 shadow-soft lg:order-1 lg:h-[69vh]"><img src={jasperClairHero} alt="Une scène de vie familiale lumineuse" className="h-full w-full object-cover object-[70%_center] opacity-85" /><div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" /><p className="absolute bottom-6 left-7 rounded-full bg-cream/90 px-4 py-2 text-xs font-semibold text-ink">La maison change toute la journée.</p></div><div className="order-1 max-w-lg lg:order-2"><p className="text-xs font-semibold uppercase tracking-[.2em] text-primary">02 — La maison</p><h2 className="mt-3 font-display text-5xl font-semibold leading-tight">Il est là<br /><span className="italic">quand il faut.</span></h2><p className="mt-5 leading-relaxed text-muted-foreground">Une porte fermée toute la nuit. Une longue visioconférence. Un dimanche à plusieurs. Jasper n’interrompt rien : il rend simplement visible ce que la pièce vous raconte déjà.</p><div className="mt-7 grid grid-cols-3 gap-3 text-xs"><QuietCard title="Chambre" copy="au réveil" /><QuietCard title="Bureau" copy="entre deux idées" /><QuietCard title="Salon" copy="à plusieurs" /></div></div></div>; }
+function QuietCard({ title, copy }: { title: string; copy: string }) { return <div className="rounded-2xl border border-ink/8 bg-white/75 p-3"><p className="font-display text-base font-semibold">{title}</p><p className="mt-1 text-muted-foreground">{copy}</p></div>; }
+
+function Object() { return <div className="grid h-full grid-cols-1 items-center gap-8 px-7 md:px-14 lg:grid-cols-[.9fr_1.1fr] lg:px-24"><div className="max-w-lg"><p className="text-xs font-semibold uppercase tracking-[.2em] text-primary">03 — L’objet</p><h2 className="mt-3 font-display text-5xl font-semibold leading-tight">Un objet doux.<br /><span className="italic">Une présence nette.</span></h2><p className="mt-5 leading-relaxed text-muted-foreground">La forme est volontairement simple : une face claire, un grand affichage, un contour souple. Elle est pensée pour rester sur une table, pas pour devenir un autre écran à regarder.</p></div><div className="grid gap-3 pr-0 md:grid-cols-2 md:pr-20"><Feature title="Un affichage généreux" copy="La mesure importante se lit à distance, sans sortir son téléphone." /><Feature title="Une bordure protectrice" copy="Une structure stable, accompagnée d’un bord doux et remplaçable." /><Feature title="Un seul modèle" copy="Moins de variations, plus de soin apporté à la pièce essentielle." /><Feature title="Une technologie honnête" copy="Les mesures et conformités finales seront publiées avant ouverture commerciale." /></div></div>; }
+function Feature({ title, copy }: { title: string; copy: string }) { return <article className="rounded-[1.75rem] border border-ink/7 bg-white/80 p-5 shadow-soft"><span className="mb-7 block h-2 w-2 rounded-full bg-mint" /><h3 className="font-display text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p></article>; }
+
+function Reserve() { const { addItem, openCart } = useCart(); const reserve = () => { addItem(edition.id); openCart(); toast.success("Jasper Clair a été ajouté au panier."); }; return <div className="grid h-full grid-cols-1 items-center gap-8 px-7 md:px-14 lg:grid-cols-[1fr_.85fr] lg:px-24"><div className="max-w-lg"><p className="text-xs font-semibold uppercase tracking-[.2em] text-primary">04 — Première série</p><h2 className="mt-3 font-display text-5xl font-semibold leading-tight">Faites entrer Jasper<br /><span className="italic">dans votre maison.</span></h2><p className="mt-5 leading-relaxed text-muted-foreground">Une seule édition, pensée pour commencer juste. Les caractéristiques définitives, conformités et conditions de livraison seront confirmées avant l’ouverture commerciale.</p><ul className="mt-6 space-y-2.5 text-sm">{edition.features.map((feature) => <li key={feature} className="flex gap-2.5"><Check className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-mint p-0.5" />{feature}</li>)}</ul></div><div className="relative rounded-[2.5rem] border border-ink/7 bg-white/90 p-7 shadow-soft md:mr-20"><div className="flex items-start justify-between"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-muted-foreground">Jasper Clair</p><p className="mt-2 font-display text-3xl font-semibold">89 € <span className="ml-1 text-base font-normal text-muted-foreground line-through">99 €</span></p></div><span className="rounded-full bg-mint-soft px-3 py-1.5 text-xs font-semibold">Prix fondateur</span></div><div className="my-6 h-px bg-ink/8" /><p className="text-sm leading-relaxed text-muted-foreground">Une première série pour celles et ceux qui veulent faire de l’air un réflexe doux, pas une source d’inquiétude.</p><button onClick={reserve} className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 font-semibold text-cream shadow-soft transition hover:scale-[1.01]">Réserver Jasper Clair <ArrowRight className="h-4 w-4" /></button><p className="mt-3 text-center text-[11px] text-muted-foreground">Aucun engagement implicite sur les délais avant publication des conditions.</p></div></div>; }
+
+function Footer() { return <footer className="absolute inset-x-0 bottom-0 z-30 flex h-14 items-center justify-between border-t border-ink/10 bg-cream/85 px-7 text-xs text-muted-foreground backdrop-blur md:px-14"><span>© 2026 Jasper · Un air plus simple.</span><span className="hidden sm:block">Utilisez la molette ou les flèches pour parcourir</span></footer>; }
