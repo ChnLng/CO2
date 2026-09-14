@@ -18,16 +18,16 @@
     nav { display:flex; gap:9px; flex-wrap:wrap; margin-top:28px; } nav a { color:#dfeaf6; text-decoration:none; border:1px solid #40526f; padding:7px 11px; border-radius:999px; font-size:.82rem; } nav a:hover { background:#243651; }
     main { padding:42px 0 82px; } section { margin:0 0 64px; }
     h2 { font-size:clamp(1.65rem,3vw,2.55rem); letter-spacing:-.04em; line-height:1.13; margin:0 0 10px; }
-    h2 small { display:inline; color:var(--muted); font-size:.48em; letter-spacing:0; margin-left:.45em; font-weight:600; }
-    .intro { display:grid; grid-template-columns:1.05fr .95fr; gap:36px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:26px; padding:clamp(24px,4vw,48px); }
+    h2 small { display:block; color:var(--muted); font-size:.48em; letter-spacing:0; margin:6px 0 0; font-weight:600; }
+    .intro { display:grid; grid-template-columns:1fr; gap:24px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:26px; padding:clamp(24px,4vw,48px); box-shadow:0 18px 45px rgba(17,32,58,.07); }
     .intro img { width:100%; display:block; border-radius:18px; }
     .note { border-left:4px solid var(--mint); padding:8px 0 8px 16px; color:#33435d; }
     .principle { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; } .principle div { background:var(--sky); padding:15px; border-radius:13px; font-size:.9rem; } .principle b { display:block; font-size:1.3rem; }
-    .concept-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; } .concept { background:var(--paper); border:1px solid var(--line); border-radius:17px; overflow:hidden; } .concept img { display:block; width:100%; aspect-ratio:1; object-fit:cover; } .concept-copy { padding:14px; } .concept h3 { margin:0 0 3px; font-size:1rem; } .concept p { margin:8px 0 0; font-size:.82rem; color:#3f4f68; } .concept .fr { margin:0; }
+    .concept-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; } .concept { background:var(--paper); border:1px solid var(--line); border-radius:17px; overflow:hidden; box-shadow:0 10px 22px rgba(17,32,58,.07); } .concept:first-child { border-color:#9bd9bd; } .concept img { display:block; width:100%; aspect-ratio:1; object-fit:cover; } .concept-copy { padding:13px; } .concept h3 { margin:0 0 3px; font-size:1rem; } .concept p { margin:7px 0 0; font-size:.8rem; color:#3f4f68; } .concept .fr { margin:0; }
     .persona-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .persona { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:21px; min-height:295px; display:flex; flex-direction:column; }
-    .num { width:31px; height:31px; border-radius:50%; background:var(--navy); color:var(--mint); display:grid; place-items:center; font-size:.75rem; font-weight:800; margin-bottom:13px; }
-    .persona h3 { display:inline; font-size:.84rem; line-height:1.2; margin:0; color:var(--muted); font-weight:600; } .persona > .fr { color:var(--ink); font-size:1.12rem; } .fr { display:inline; color:var(--muted); font-size:.84rem; font-weight:600; } .concept h3 { display:inline; } em.fr-primary { font-style:normal; color:var(--ink); font-weight:650; } .cn-secondary { color:var(--muted); font-size:.94em; }
+    .persona { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:19px; min-height:290px; display:flex; flex-direction:column; box-shadow:0 10px 25px rgba(17,32,58,.05); }
+    .num { width:31px; height:31px; border-radius:50%; background:linear-gradient(145deg,#19375d,#0c1a32); color:var(--mint); display:grid; place-items:center; font-size:.75rem; font-weight:800; margin-bottom:12px; box-shadow:0 5px 12px rgba(17,32,58,.18); }
+    .persona h3 { display:block; font-size:.82rem; line-height:1.3; margin:2px 0 10px; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .persona > .fr { display:block; color:var(--ink); font-size:1.04rem; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .fr { display:inline; color:var(--muted); font-size:.84rem; font-weight:600; } .concept h3 { display:inline; } em.fr-primary { font-style:normal; color:var(--ink); font-weight:650; } .cn-secondary { display:block; margin-top:4px; color:var(--muted); font-size:.94em; }
     .persona p { margin:0 0 12px; font-size:.9rem; } .persona strong { color:#0d735a; } .tag { margin-top:auto; padding-top:12px; color:#3f4f68; font-size:.82rem; border-top:1px solid var(--line); } .price { margin-top:10px; display:inline-block; background:#dff8ec; color:#075941; padding:6px 9px; border-radius:9px; font-size:.79rem; font-weight:800; }
     .format { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; } .card { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:24px; } .card h3 { margin:0 0 10px; }
     .formats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; } .format-item { border:1px solid var(--line); border-radius:13px; padding:15px; } .format-item b { display:block; font-size:1.04rem; }
@@ -35,9 +35,8 @@
     .mold { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; } .step { background:var(--navy); color:#eef6ff; padding:23px; border-radius:17px; } .step span { color:var(--mint); font-weight:800; font-size:.83rem; } .step h3 { margin:9px 0; } .step p { color:#cbd8e7; font-size:.9rem; margin:0; }
     .callout { margin-top:16px; padding:18px 20px; border:1px solid #f0d9a8; background:#fff8e8; border-radius:14px; color:#674816; }
     footer { background:var(--navy); color:#cbd8e7; padding:26px 0; font-size:.82rem; } footer b{color:#fff;}
-    @media(max-width:1000px) { .concept-grid {grid-template-columns:repeat(3,1fr);} }
-    @media(max-width:800px) { .intro,.format {grid-template-columns:1fr;} .persona-grid,.mold {grid-template-columns:1fr 1fr;} .concept-grid {grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:520px) { .shell{width:min(100% - 28px,1180px)} header{padding-top:38px}.principle,.persona-grid,.mold,.formats,.concept-grid {grid-template-columns:1fr;} .intro{padding:20px} }
+    @media(max-width:800px) { .intro,.format {grid-template-columns:1fr;} .persona-grid,.mold {grid-template-columns:1fr 1fr;} .concept-copy {padding:9px;} .concept p {font-size:.72rem;} }
+    @media(max-width:520px) { .shell{width:min(100% - 28px,1180px)} header{padding-top:38px}.principle,.persona-grid,.mold,.formats {grid-template-columns:1fr;} .intro{padding:20px} .concept-grid{gap:5px;} .concept-copy{padding:6px;} .concept h3{font-size:.72rem;} .concept .fr,.concept p{font-size:.6rem;} }
   </style>
 </head>
 <body>
@@ -58,18 +57,18 @@
         <p class="note">CO₂ 是室内换气不足的实用信号，但空气净化器通常<strong>不能降低 CO₂</strong>。产品必须明确提示“开窗或开新风”，避免用户采取错误动作。<br><em>Le purificateur d’air ne réduit généralement pas le CO₂ : l’action doit être « aérer » ou « activer l’air neuf ».</em></p>
         <div class="principle"><div><b>≤ 800 ppm</b>整机柔和绿色<br><em>Coque verte, air renouvelé</em></div><div><b>800–1200 ppm</b>整机柔和琥珀色<br><em>Coque ambre, à surveiller</em></div><div><b>&gt; 1200 ppm</b>整机柔和红色<br><em>Coque rouge, à aérer</em></div></div>
       </div>
-      <figure style="margin:0"><img src="assets/status-light-monitor.png" alt="Concept de moniteur CO2 à lumière d’état verte dans une coque givrée"><figcaption style="font-size:.78rem;color:var(--muted);margin-top:8px">Vue de principe 概念样态 — l’effet lumineux est visible à travers une fine fenêtre PC givrée placée derrière les perforations ; une seule couleur douce exprime l’état CO₂ 磨砂 PC 薄片置于孔阵后方，柔光由此透出；当前 CO₂ 状态以单一柔和光色表达。</figcaption></figure>
     </section>
 
     <section id="designs">
-      <div class="kicker">FIVE DESIGN DIRECTIONS — CINQ PISTES DE DESIGN</div>
+      <div class="kicker">CINQ PISTES DE DESIGN 五种设计方向</div>
       <h2>Faire circuler visuellement l’air dans l’objet<small>让空气“流过”产品</small></h2>
       <p>五个方向共同采用功能性进气孔、孔后磨砂 PC 扩散片和单一状态光色。光不是装饰贴片：它沿着孔阵、波纹或折页缓慢推进，让人感觉空气正在流动。<br><em>Les cinq pistes utilisent de vraies entrées d’air, un diffuseur PC givré derrière les ouvertures et une seule couleur d’état. La lumière avance dans les perforations, les ondulations ou les volets pour rendre le renouvellement d’air perceptible.</em></p>
       <div class="concept-grid">
-        <article class="concept"><img src="assets/breeze-pocket.png" alt="Breeze Pocket 便携 CO2 监测器概念图"><div class="concept-copy"><h3>Breeze Pocket</h3><span class="fr"> Poche perforée 便携孔阵</span><p>挂在包上或放在桌面；孔阵中的柔光波纹表现空气流动。<br><em>À suspendre ou poser ; vague lumineuse dans les perforations.</em></p></div></article>
-        <article class="concept"><img src="assets/vent-lantern.png" alt="Vent Lantern 提灯式 CO2 监测器概念图"><div class="concept-copy"><h3>Vent Lantern</h3><span class="fr"> Lanterne portable 轻提灯笼</span><p>带提手的小型通风灯；光沿着格栅由下向上移动。<br><em>Petite lanterne à poignée ; lumière ascendante dans la grille.</em></p></div></article>
-        <article class="concept"><img src="assets/ripple-stack.png" alt="Ripple Stack 波纹层叠 CO2 监测器概念图"><div class="concept-copy"><h3>Ripple Stack</h3><span class="fr"> Ondes superposées 波纹层叠</span><p>波纹层之间即是进气口；适合书架、床头和办公室。<br><em>Les interstices servent d’entrées d’air ; pour bureau ou chevet.</em></p></div></article>
-        <article class="concept"><img src="assets/orbit-clip.png" alt="Orbit Clip 夹扣 CO2 监测器概念图"><div class="concept-copy"><h3>Orbit Clip</h3><span class="fr"> Clip quotidien 夹扣随行</span><p>包、婴儿车或衣物上的随行传感器；环形光流围绕读数。<br><em>Capteur à clipser ; halo en mouvement autour de la mesure.</em></p></div></article>
+        <article class="concept"><img src="assets/status-light-monitor.png" alt="Air Halo Base moniteur CO2 à lumière douce"><div class="concept-copy"><h3>Air Halo Base</h3><span class="fr">Pleine lumière<br>基础满光造型</span><p>Base lumineuse apaisée à poser ; une couleur unique fait comprendre l’état de l’air.<br>桌面基础满光款；单一柔光传达空气状态。</p></div></article>
+        <article class="concept"><img src="assets/breeze-pocket.png" alt="Breeze Pocket 便携 CO2 监测器概念图"><div class="concept-copy"><h3>Breeze Pocket</h3><span class="fr">Poche perforée<br>便携孔阵</span><p>挂在包上或放在桌面；孔阵中的柔光波纹表现空气流动。<br><em>À suspendre ou poser ; vague lumineuse dans les perforations.</em></p></div></article>
+        <article class="concept"><img src="assets/vent-lantern.png" alt="Vent Lantern 提灯式 CO2 监测器概念图"><div class="concept-copy"><h3>Vent Lantern</h3><span class="fr">Lanterne portable<br>轻提灯笼</span><p>带提手的小型通风灯；光沿着格栅由下向上移动。<br><em>Petite lanterne à poignée ; lumière ascendante dans la grille.</em></p></div></article>
+        <article class="concept"><img src="assets/ripple-stack.png" alt="Ripple Stack 波纹层叠 CO2 监测器概念图"><div class="concept-copy"><h3>Ripple Stack</h3><span class="fr">Ondes superposées<br>波纹层叠</span><p>波纹层之间即是进气口；适合书架、床头和办公室。<br><em>Les interstices servent d’entrées d’air ; pour bureau ou chevet.</em></p></div></article>
+        <article class="concept"><img src="assets/orbit-clip.png" alt="Orbit Clip 夹扣 CO2 监测器概念图"><div class="concept-copy"><h3>Orbit Clip</h3><span class="fr">Clip quotidien<br>夹扣随行</span><p>包、婴儿车或衣物上的随行传感器；环形光流围绕读数。<br><em>Capteur à clipser ; halo en mouvement autour de la mesure.</em></p></div></article>
       </div>
     </section>
 
