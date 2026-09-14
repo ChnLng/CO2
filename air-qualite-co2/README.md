@@ -1,19 +1,19 @@
-# Air Air — CO₂ 产品机会简报
+# Air Air — Note de conception CO₂ 产品机会简报
 
-一个无需构建步骤的中法双语静态网页，说明 CO₂ 室内空气监测器的目标人群、产品形态、功能优先级，以及低成本材料和模具路线。
+Une page statique bilingue, sans étape de compilation, consacrée aux publics, formats, fonctions et à une voie matière et moules économique pour un moniteur de CO₂. 一个无需构建步骤的中法双语静态网页，说明 CO₂ 室内空气监测器的目标人群、产品形态、功能优先级，以及低成本材料和模具路线。
 
-## 在本地查看
+## Voir en local 本地查看
 
-直接打开 `index.html` 即可。
+Ouvrir directement `index.html`. 直接打开 `index.html` 即可。
 
-## 上传至 GitHub
+## Publication GitHub 上传至 GitHub
 
-将 `air-qualite-co2` 文件夹整体上传到仓库。若使用 GitHub Pages，在仓库设置中把 Pages 的发布源设为该目录所在分支（或将本目录内容放在仓库根目录）。
+Le dossier `air-qualite-co2` est prêt à être publié par GitHub Pages via le workflow inclus. 此文件夹已经可通过随附工作流由 GitHub Pages 发布。
 
-## 文件
+## Fichiers 文件
 
-- `index.html`：完整网页，无外部依赖
-- `assets/status-light-monitor.png`：全机身半透明磨砂状态灯概念图
-- `assets/breeze-pocket.png`、`vent-lantern.png`、`ripple-stack.png`、`orbit-clip.png`：四种便携或装饰型概念图
+- `index.html` page complète, sans dépendance externe
+- `assets/status-light-monitor.png` vue de principe de lumière douce
+- `assets/breeze-pocket.png`、`vent-lantern.png`、`ripple-stack.png`、`orbit-clip.png` quatre concepts portables ou décoratifs
 
-成本为概念估算，并非供应商报价；量产前应取得正式 DFM、模流分析与认证报价。
+Les coûts sont des estimations de conception, non des devis fournisseurs. Faire établir DFM, analyse de moulage et devis de certification avant production. 成本为概念估算，并非供应商报价；量产前应取得正式 DFM、模流分析与认证报价。
