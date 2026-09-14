@@ -85,14 +85,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       meta: [
         { charSet: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { title: "Jasper — Le capteur de CO₂ pour la maison" },
+        { title: "Jasper Signal — Le bon moment d’aérer" },
         {
           name: "description",
           content:
-            "Jasper, le détecteur de CO₂ en forme de pingouin : un air sain pour vos enfants, vos aînés et vos animaux. Design français, fabrication responsable.",
+            "Jasper Signal rend le CO₂ facile à comprendre grâce à un anneau lumineux doux. Un geste simple pour mieux aérer la maison.",
         },
         { name: "author", content: "Jasper" },
-        { property: "og:title", content: "Jasper — Un air sain à la maison" },
+        { property: "og:title", content: "Jasper Signal — Un air plus simple" },
         {
           property: "og:description",
           content:

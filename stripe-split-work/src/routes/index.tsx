@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import jasperClairHero from "@/assets/jasper-clair-hero.png";
+import jasperClairHero from "@/assets/jasper-signal-family.png";
 import jasperClairPrototype from "@/assets/jasper-clair-prototype.png";
 import { CartSheet } from "@/components/site/cart-sheet";
 import { EDITIONS } from "@/components/site/editions";
@@ -85,7 +85,7 @@ function TopBar() {
   }, []);
   const logout = async () => { await supabase.auth.signOut(); toast.success("Vous êtes déconnecté(e)."); };
   return <header className="absolute inset-x-0 top-0 z-30 flex h-16 items-center justify-between px-7 md:px-14">
-    <div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-full bg-ink text-sm font-black text-mint">J</span><span className="font-display text-lg font-semibold tracking-tight">Jasper</span></div>
+    <div className="flex items-center gap-2.5"><span className="jasper-logo-ring" aria-hidden="true"><span /></span><span className="font-display text-lg font-semibold tracking-tight">Jasper</span></div>
     <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
       {user ? <>{role === "admin" ? <a href="/admin" className="hover:text-ink">Administration</a> : null}<a href="/orders" className="hover:text-ink">Commandes</a><button onClick={logout} className="hover:text-ink">Déconnexion</button></> : <><a href="/login" className="hover:text-ink">Connexion</a><a href="/register" className="rounded-full bg-ink px-4 py-1.5 text-xs text-cream">Créer un compte</a></>}
     </nav>

@@ -88,6 +88,40 @@
   100% { transform: translate3d(var(--drift), -142px, 0) scale(1.08); opacity: 0; }
 }
 
+@keyframes jasper-logo-cycle {
+  0%, 30% {
+    border-color: var(--mint);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--mint) 18%, transparent), 0 0 16px color-mix(in oklab, var(--mint) 55%, transparent);
+  }
+  33%, 63% {
+    border-color: var(--warn);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--warn) 18%, transparent), 0 0 16px color-mix(in oklab, var(--warn) 55%, transparent);
+  }
+  66%, 100% {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 18%, transparent), 0 0 16px color-mix(in oklab, var(--danger) 55%, transparent);
+  }
+}
+
+.jasper-logo-ring {
+  display: grid;
+  place-items: center;
+  height: 2.25rem;
+  width: 2.25rem;
+  border: 2px solid var(--mint);
+  border-radius: 999px;
+  background: var(--ink);
+  animation: jasper-logo-cycle 8s ease-in-out infinite;
+}
+
+.jasper-logo-ring span {
+  height: .38rem;
+  width: .38rem;
+  border-radius: 999px;
+  background: var(--cream);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--cream) 80%, transparent);
+}
+
 .jasper-bubble {
   position: absolute;
   bottom: 0;
@@ -123,7 +157,7 @@
 .jasper-clean-bubble-e { --drift: 15px; right: 35%; height: 9px; width: 9px; animation-delay: -10s; animation-duration: 17s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .jasper-bubble { animation: none; opacity: .25; }
+  .jasper-bubble, .jasper-logo-ring { animation: none; opacity: .25; }
 }
 
 @media (max-height: 520px) and (max-width: 1023px) {

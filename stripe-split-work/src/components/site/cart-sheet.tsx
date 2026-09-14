@@ -70,7 +70,7 @@ export function CartSheet() {
                 <ShoppingBag className="h-8 w-8 mb-3 opacity-40" />
                 <p className="text-sm">Votre panier est vide.</p>
                 <p className="text-xs mt-1">
-                  Ajoutez Jasper Clair depuis la page d’accueil.
+                  Ajoutez Jasper Signal depuis la page d’accueil.
                 </p>
               </div>
             ) : (
