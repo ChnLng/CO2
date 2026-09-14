@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CO₂ air-quality monitor: bilingual audience, product and low-cost manufacturing brief." />
+  <title>Air Air — Note de conception CO₂ 产品机会简报</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2311203a'/%3E%3Cpath d='M18 33c8 0 8-12 16-12s8 12 16 12' fill='none' stroke='%2393f0c9' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root { --ink:#11203a; --muted:#61708a; --line:#dce5ef; --sky:#eaf4fb; --mint:#93f0c9; --navy:#101f39; --paper:#fff; --warning:#f5b65b; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:#f7fafc; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; line-height:1.55; }
+    .shell { width:min(1180px, calc(100% - 36px)); margin:auto; }
+    header { background:var(--navy); color:#fff; padding:52px 0 36px; overflow:hidden; }
+    .eyebrow, .kicker { font-size:.76rem; letter-spacing:.12em; font-weight:800; text-transform:uppercase; color:#96ebcd; }
+    h1 { font-size:clamp(2.2rem,6vw,4.8rem); line-height:1; letter-spacing:-.055em; margin:.3rem 0 1.1rem; max-width:850px; }
+    h1 span { color:#a8def7; } .lede { max-width:760px; color:#d9e4f2; font-size:1.08rem; }
+    nav { display:flex; gap:9px; flex-wrap:wrap; margin-top:28px; } nav a { color:#dfeaf6; text-decoration:none; border:1px solid #40526f; padding:7px 11px; border-radius:999px; font-size:.82rem; } nav a:hover { background:#243651; }
+    main { padding:42px 0 82px; } section { margin:0 0 64px; }
+    h2 { font-size:clamp(1.65rem,3vw,2.55rem); letter-spacing:-.04em; line-height:1.13; margin:0 0 10px; }
+    h2 small { display:inline; color:var(--muted); font-size:.48em; letter-spacing:0; margin-left:.45em; font-weight:600; }
+    .intro { display:grid; grid-template-columns:1.05fr .95fr; gap:36px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:26px; padding:clamp(24px,4vw,48px); }
+    .intro img { width:100%; display:block; border-radius:18px; }
+    .note { border-left:4px solid var(--mint); padding:8px 0 8px 16px; color:#33435d; }
+    .principle { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; } .principle div { background:var(--sky); padding:15px; border-radius:13px; font-size:.9rem; } .principle b { display:block; font-size:1.3rem; }
+    .concept-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; } .concept { background:var(--paper); border:1px solid var(--line); border-radius:17px; overflow:hidden; } .concept img { display:block; width:100%; aspect-ratio:1; object-fit:cover; } .concept-copy { padding:14px; } .concept h3 { margin:0 0 3px; font-size:1rem; } .concept p { margin:8px 0 0; font-size:.82rem; color:#3f4f68; } .concept .fr { margin:0; }
+    .persona-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .persona { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:21px; min-height:295px; display:flex; flex-direction:column; }
+    .num { width:31px; height:31px; border-radius:50%; background:var(--navy); color:var(--mint); display:grid; place-items:center; font-size:.75rem; font-weight:800; margin-bottom:13px; }
+    .persona h3 { display:inline; font-size:.84rem; line-height:1.2; margin:0; color:var(--muted); font-weight:600; } .persona > .fr { color:var(--ink); font-size:1.12rem; } .fr { display:inline; color:var(--muted); font-size:.84rem; font-weight:600; } .concept h3 { display:inline; } em.fr-primary { font-style:normal; color:var(--ink); font-weight:650; } .cn-secondary { color:var(--muted); font-size:.94em; }
+    .persona p { margin:0 0 12px; font-size:.9rem; } .persona strong { color:#0d735a; } .tag { margin-top:auto; padding-top:12px; color:#3f4f68; font-size:.82rem; border-top:1px solid var(--line); } .price { margin-top:10px; display:inline-block; background:#dff8ec; color:#075941; padding:6px 9px; border-radius:9px; font-size:.79rem; font-weight:800; }
+    .format { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; } .card { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:24px; } .card h3 { margin:0 0 10px; }
+    .formats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; } .format-item { border:1px solid var(--line); border-radius:13px; padding:15px; } .format-item b { display:block; font-size:1.04rem; }
+    .cost { overflow:auto; background:var(--paper); border-radius:18px; border:1px solid var(--line); } table { width:100%; min-width:720px; border-collapse:collapse; } th,td { text-align:left; padding:15px 17px; border-bottom:1px solid var(--line); vertical-align:top; } th { background:#eaf4fb; font-size:.84rem; } td { font-size:.9rem; } tr:last-child td { border-bottom:none; }
+    .mold { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; } .step { background:var(--navy); color:#eef6ff; padding:23px; border-radius:17px; } .step span { color:var(--mint); font-weight:800; font-size:.83rem; } .step h3 { margin:9px 0; } .step p { color:#cbd8e7; font-size:.9rem; margin:0; }
+    .callout { margin-top:16px; padding:18px 20px; border:1px solid #f0d9a8; background:#fff8e8; border-radius:14px; color:#674816; }
+    footer { background:var(--navy); color:#cbd8e7; padding:26px 0; font-size:.82rem; } footer b{color:#fff;}
+    @media(max-width:1000px) { .concept-grid {grid-template-columns:repeat(3,1fr);} }
+    @media(max-width:800px) { .intro,.format {grid-template-columns:1fr;} .persona-grid,.mold {grid-template-columns:1fr 1fr;} .concept-grid {grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:520px) { .shell{width:min(100% - 28px,1180px)} header{padding-top:38px}.principle,.persona-grid,.mold,.formats,.concept-grid {grid-template-columns:1fr;} .intro{padding:20px} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <div class="eyebrow">CONCEPT BRIEF — SEPTEMBER 2026</div>
+      <h1>Savoir <span>quand aérer</span> 知道何时通风<br>et pas seulement voir un chiffre 而不只是看到一个数字。</h1>
+      <p class="lede">Un moniteur CO₂ utile ne mesure pas seulement l’air : il transforme une donnée invisible en une décision simple — aérer, activer la ventilation, ou attendre.</p>
+      <nav><a href="#product">Produit 产品</a><a href="#designs">Concepts 设计图</a><a href="#audiences">Publics 人群</a><a href="#cost">Coût 成本</a><a href="#shipping">Livraison 寄送</a><a href="#mold">Outillage 模具</a></nav>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="intro" id="product">
+      <div>
+        <div class="kicker">IDEAL PRODUCT — PRODUIT IDÉAL</div>
+        <h2>Un moniteur CO₂ lisible, discret et industrialisable <small>一个看得懂、放得下、做得出的 CO₂ 监测器</small></h2>
+        <p>建议定义为<strong>“通风提示器”</strong>，不是泛泛的“空气质量仪”。主屏只突出 CO₂ 与绿色、琥珀色或红色行动状态；温湿度与其他数据留给次级页面或 App。<br><em>À positionner comme un « guide de ventilation », non comme un vague analyseur d’air. L’écran principal montre le CO₂ et une action verte, ambre ou rouge ; les autres données restent secondaires.</em></p>
+        <p class="note">CO₂ 是室内换气不足的实用信号，但空气净化器通常<strong>不能降低 CO₂</strong>。产品必须明确提示“开窗或开新风”，避免用户采取错误动作。<br><em>Le purificateur d’air ne réduit généralement pas le CO₂ : l’action doit être « aérer » ou « activer l’air neuf ».</em></p>
+        <div class="principle"><div><b>≤ 800 ppm</b>整机柔和绿色<br><em>Coque verte, air renouvelé</em></div><div><b>800–1200 ppm</b>整机柔和琥珀色<br><em>Coque ambre, à surveiller</em></div><div><b>&gt; 1200 ppm</b>整机柔和红色<br><em>Coque rouge, à aérer</em></div></div>
+      </div>
+      <figure style="margin:0"><img src="assets/status-light-monitor.png" alt="Concept de moniteur CO2 à lumière d’état verte dans une coque givrée"><figcaption style="font-size:.78rem;color:var(--muted);margin-top:8px">Vue conceptuelle 概念样态 — coque PC semi-transparente mate sur la face, les côtés et le dos ; une seule couleur douce exprime l’état CO₂ 前面、侧面和背壳均为半透明磨砂 PC；当前 CO₂ 状态以全机身同一种柔和光色呈现。</figcaption></figure>
+    </section>
+
+    <section id="designs">
+      <div class="kicker">FIVE DESIGN DIRECTIONS — CINQ PISTES DE DESIGN</div>
+      <h2>Faire circuler visuellement l’air dans l’objet<small>让空气“流过”产品</small></h2>
+      <p>五个方向共同采用半透明磨砂 PC、功能性进气孔和单一状态光色。光不是装饰贴片：它沿着孔阵、波纹或折页缓慢推进，让人感觉空气正在流动。<br><em>Les cinq pistes utilisent un PC semi-transparent mat, de vraies entrées d’air et une seule couleur d’état. La lumière avance dans les perforations, les ondulations ou les volets pour rendre le renouvellement d’air perceptible.</em></p>
+      <div class="concept-grid">
+        <article class="concept"><img src="assets/breeze-pocket.png" alt="Breeze Pocket 便携 CO2 监测器概念图"><div class="concept-copy"><h3>Breeze Pocket</h3><span class="fr"> Poche perforée 便携孔阵</span><p>挂在包上或放在桌面；孔阵中的柔光波纹表现空气流动。<br><em>À suspendre ou poser ; vague lumineuse dans les perforations.</em></p></div></article>
+        <article class="concept"><img src="assets/vent-lantern.png" alt="Vent Lantern 提灯式 CO2 监测器概念图"><div class="concept-copy"><h3>Vent Lantern</h3><span class="fr"> Lanterne portable 轻提灯笼</span><p>带提手的小型通风灯；光沿着格栅由下向上移动。<br><em>Petite lanterne à poignée ; lumière ascendante dans la grille.</em></p></div></article>
+        <article class="concept"><img src="assets/ripple-stack.png" alt="Ripple Stack 波纹层叠 CO2 监测器概念图"><div class="concept-copy"><h3>Ripple Stack</h3><span class="fr"> Ondes superposées 波纹层叠</span><p>波纹层之间即是进气口；适合书架、床头和办公室。<br><em>Les interstices servent d’entrées d’air ; pour bureau ou chevet.</em></p></div></article>
+        <article class="concept"><img src="assets/orbit-clip.png" alt="Orbit Clip 夹扣 CO2 监测器概念图"><div class="concept-copy"><h3>Orbit Clip</h3><span class="fr"> Clip quotidien 夹扣随行</span><p>包、婴儿车或衣物上的随行传感器；环形光流围绕读数。<br><em>Capteur à clipser ; halo en mouvement autour de la mesure.</em></p></div></article>
+      </div>
+    </section>
+
+    <section id="audiences">
+      <div class="kicker">ONE PERSONA, ONE PAGE — UNE PERSONA, UNE PAGE</div>
+      <h2>Qui en a réellement besoin ?<small>谁会强烈需要它？</small></h2>
+      <div class="persona-grid">
+        <article class="persona"><div class="num">01</div><h3>婴幼儿家庭与照护者</h3><span class="fr">Parents, bébés et aidants</span><p><strong>何时：</strong>婴儿房、卧室、冬季不开窗。<br><em>Chambre de bébé, nuit, hiver.</em></p><p><strong>需求：</strong>不打扰睡眠地判断何时短暂通风，兼顾干燥或过热。<br><em>Décider d’une courte aération sans troubler le sommeil, tout en surveillant air sec ou chaleur.</em></p><div class="tag">首选：低亮桌面时钟 · veilleuse de chevet<br>附加：温湿度、静音夜间提醒 · température, humidité, alertes silencieuses</div><div class="price">最可能支付：49–59 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">02</div><h3>居家办公者与学生</h3><span class="fr">Télétravailleurs et étudiants</span><p><strong>何时：</strong>下午犯困、连续专注、自习室。<br><em>Baisse d’attention, travail profond.</em></p><p><strong>需求：</strong>将“发闷”变成可执行的休息与开窗提醒。<br><em>Transformer la sensation d’air lourd en rappel actionnable : pause et fenêtre.</em></p><div class="tag">首选：电脑旁 USB-C 桌面屏 · écran de bureau<br>附加：专注计时、趋势图、柔和提示灯 · minuteur, courbe, voyant doux</div><div class="price">最可能支付：39–49 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">03</div><h3>教师、学校与培训机构</h3><span class="fr">Écoles et formateurs</span><p><strong>何时：</strong>满员教室、门窗关闭的课堂。<br><em>Salles de classe pleines et fermées.</em></p><p><strong>需求：</strong>远处一眼可读，便于统一安排通风，而非解读数据。<br><em>Lisible de loin pour organiser l’aération collective, sans interpréter des chiffres.</em></p><div class="tag">首选：大数字壁挂与红黄绿灯 · affichage mural<br>附加：多教室总览、USB 供电、静音视觉警报 · vue multi-salles, USB, alerte visuelle</div><div class="price">最可能支付：69–79 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">04</div><h3>办公室与会议室管理者</h3><span class="fr">Bureaux et salles de réunion</span><p><strong>何时：</strong>会议密集、电话间、员工抱怨“很闷”。<br><em>Réunions, cabines, plaintes de confort.</em></p><p><strong>需求：</strong>快速说明问题在哪一间房，并让新风按需运行。<br><em>Identifier immédiatement la salle concernée et piloter l’air neuf selon le besoin.</em></p><div class="tag">首选：低调墙装探头 · capteur mural discret<br>附加：会议室屏幕联动、BACnet、Wi‑Fi、设备后台 · écran, connexion, gestion</div><div class="price">最可能支付：89–119 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">05</div><h3>健身、瑜伽与舞蹈空间</h3><span class="fr">Studios de sport et yoga</span><p><strong>何时：</strong>高呼吸量、多人团课、无窗场地。<br><em>Effort physique, forte densité, local sans fenêtre.</em></p><p><strong>需求：</strong>让教练在不打断课程的前提下决定开新风或减少人数。<br><em>Permettre au coach d’aérer ou d’ajuster la jauge sans interrompre le cours.</em></p><div class="tag">首选：入口或教练可见的信号灯 · feu de signalisation<br>附加：声音可关、峰值记录、新风继电器接口 · son coupable, pics, relais</div><div class="price">最可能支付：69–89 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">06</div><h3>餐饮、酒店与短租运营者</h3><span class="fr">Hôtellerie, cafés et locations</span><p><strong>何时：</strong>高峰客流、地下餐区、多人住宿。<br><em>Heures de pointe, sous-sol, chambres partagées.</em></p><p><strong>需求：</strong>保持体感与评价，不必把复杂设备展示给客人。<br><em>Préserver confort et avis clients, sans exposer un appareil complexe.</em></p><div class="tag">首选：隐藏墙装与管理端 · capteur discret, tableau de bord<br>附加：多设备管理、维护提醒、导出报告 · parc, maintenance, export</div><div class="price">最可能支付：79–99 € TTC · Prix probable</div></article>
+        <article class="persona"><div class="num">07</div><h3>呼吸敏感人与智能家居用户</h3><span class="fr">Personnes sensibles et maison connectée</span><p><strong>何时：</strong>过敏季、新装修、全屋新风控制。<br><em>Allergies, rénovation, ventilation domestique.</em></p><p><strong>需求：</strong>将 CO₂ 放在温湿度、颗粒物与通风策略的整体判断中。<br><em>Lire le CO₂ avec température, humidité, particules et stratégie de ventilation.</em></p><div class="tag">首选：家居化一体机 · station domestique<br>附加：PM2.5、TVOC 趋势、HomeKit、Matter 或新风联动 · tendances et automatisation</div><div class="price">最可能支付：79–99 € TTC · Prix probable</div></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">FORM FACTOR & FEATURES — FORME & FONCTIONS</div>
+      <h2>Une plateforme, quatre usages<small>一个平台，四种呈现</small></h2>
+      <div class="format"><div class="card"><div class="formats"><div class="format-item"><b>桌面时钟型</b>家庭、书桌。共用主机，折叠支架。<br><em>Maison et bureau.</em></div><div class="format-item"><b>壁挂信号型</b>教室、健身房。大字、远距可见。<br><em>Lecture à distance.</em></div><div class="format-item"><b>隐藏传感器型</b>商业空间。重点在后台和联动。<br><em>Discret, connecté.</em></div><div class="format-item"><b>便携检验型</b>看房、旅行、车内。重点是续航与耐摔。<br><em>Mobile, robuste.</em></div></div></div><aside class="card"><h3>Priorités 功能优先级</h3><p><strong>第一层：</strong>真实 NDIR CO₂、温度、湿度、行动提示。<br><em>NDIR CO₂, température, humidité, conseil d’action.</em></p><p><strong>第二层：</strong>7 天趋势、可配置阈值、夜间模式、USB-C。<br><em>Historique, seuils, mode nuit, USB‑C.</em></p><p><strong>选择性：</strong>PM2.5 或 TVOC；它们增加成本与维护，不应牺牲 CO₂ 传感器品质。<br><em>PM2.5 ou TVOC en option, sans dégrader le capteur CO₂.</em></p></aside></div>
+    </section>
+
+    <section id="cost">
+      <div class="kicker">LOW-COST BILL OF MATERIALS — BOM ÉCONOMIQUE</div>
+      <h2>Investir dans le capteur, pas dans le décor<small>把钱花在传感器，而不是装饰上</small></h2>
+      <div class="cost"><table><thead><tr><th>Composant 部件</th><th>Recommandation 建议</th><th>Stratégie économique 低成本策略</th><th>Prix indicatif</th></tr></thead><tbody>
+        <tr><td>CO₂ 核心</td><td>成熟 NDIR 模组，带自动基线校准</td><td>不使用 eCO₂ 或 VOC 推算值；这是产品可信度的底线。</td><td>US$10–18</td></tr>
+        <tr><td>显示与交互</td><td>2.13–2.9 吋单色 LCD 或段码屏，加 3 颗 RGB LED</td><td>免触摸屏、免玻璃贴合；只保留一个轻触按键。</td><td>US$2.7–5.4</td></tr>
+        <tr><td>主板</td><td>通用 MCU、温湿度 IC、USB‑C 5V</td><td>首代使用 Wi‑Fi 可选，不把电池、无线、App 都塞进基础版。</td><td>US$3–6</td></tr>
+        <tr><td>外壳与流光</td><td>两件式细纹 ABS 外壳，局部镂空孔阵，加一片磨砂半透明 PC 扩散片</td><td>外壳不做全透明。把薄 PC 扩散片固定在孔阵后方，搭配白色反射片和 3 颗 RGB LED，让光沿孔阵流动。</td><td>US$1.5–2.7</td></tr>
+        <tr><td>装配与包装</td><td>4 颗自攻螺丝或卡扣，纸卡与牛皮纸盒</td><td>不使用胶水、磁吸盖、专属电源适配器。</td><td>US$1.5–3</td></tr>
+        <tr><td><strong>BOM cible</strong></td><td colspan="2"><strong>基础 USB 版：CO₂、温湿度、屏幕、3 颗 RGB LED、局部扩散片；不含运输、认证、渠道及税费。</strong></td><td><strong>US$17–32</strong></td></tr>
+      </tbody></table></div>
+      <div class="callout"><strong>Note coût 成本说明：</strong>以上为约 1,000–5,000 台规模的概念性出厂 BOM 区间，而非报价。真正压成本的顺序是：选可靠 NDIR、简化显示、共用 ABS 壳体平台、用局部扩散片而不是整壳透光。<br><em>Ordres de grandeur industriels, hors certification, transport, marge et taxes.</em></div>
+    </section>
+
+    <section id="shipping">
+      <div class="kicker">PARIS FULFILMENT — EXPÉDITION DEPUIS PARIS</div>
+      <h2>Expédier depuis Paris selon la destination<small>从巴黎寄往法国的建议</small></h2>
+      <p>以下按<strong>含包装不超过 500 g</strong>的一台设备计算，使用 2026 年公开零售资费；发货人如有企业合约，价格可能更低。<br><em>Base de calcul : un appareil emballé de 500 g maximum, tarifs publics 2026. Un contrat professionnel peut réduire ces montants.</em></p>
+      <div class="cost"><table><thead><tr><th>目的地</th><th>建议方式</th><th>公开寄费</th><th>预计时效</th></tr></thead><tbody>
+        <tr><td>巴黎及法兰西岛的急件<br><em>Paris et Île-de-France urgent</em></td><td>Chrono Relais 13，到自提点<br><em>relais Pickup</em></td><td>10,80 € TTC</td><td>下一个工作日中午前<br><em>lendemain avant 13 h</em></td></tr>
+        <tr><td>法国本土，价格优先<br><em>France métropolitaine, prix</em></td><td>Mondial Relay，自提点或储物柜<br><em>Point Relais ou Locker</em></td><td>4,15 € TTC</td><td>3–5 个工作日<br><em>3 à 5 jours ouvrés</em></td></tr>
+        <tr><td>法国本土，送货上门<br><em>France métropolitaine, domicile</em></td><td>Colissimo domicile，含追踪<br><em>suivi inclus</em></td><td>7,59 € TTC</td><td>1–2 个工作日<br><em>24 à 48 h ouvrables</em></td></tr>
+        <tr><td>科西嘉岛<br><em>Corse</em></td><td>Colissimo domicile；使用本土资费<br><em>tarif métropole</em></td><td>7,59 € TTC</td><td>约 2–3 个工作日，非承诺时效<br><em>environ 2 à 3 jours, sans garantie</em></td></tr>
+        <tr><td>海外省区 OM 1<br><em>Guadeloupe, Martinique, Guyane, Réunion, Mayotte et assimilés</em></td><td>Colissimo Outre-mer 标准<br><em>Colissimo Outre-mer</em></td><td>12,02 € TTC</td><td>6–18 天<br><em>6 à 18 jours</em></td></tr>
+      </tbody></table></div>
+      <div class="callout">上市建议：本土订单默认 Mondial Relay 自提点，满 69 € 可承担运费；顾客可加价换 Colissimo 上门或 Chronopost 急件。科西嘉岛和海外省区应在结账页单独显示时效与可能的地方税费。<br><em>Conseil : Mondial Relay par défaut, Colissimo ou Chronopost en option. Afficher séparément délais et éventuelles taxes locales pour la Corse et l’Outre-mer.</em></div>
+    </section>
+
+    <section id="mold">
+      <div class="kicker">MATERIAL & TOOLING — MATIÈRES & MOULES</div>
+      <h2>Une stratégie d’outillage simple et robuste<small>最低风险的壳体与模具路线</small></h2>
+      <div class="mold"><article class="step"><span>01 PROTOTYPE 试制</span><h3>SLA 或 SLS 打样</h3><p>验证尺寸、进气路径、屏幕可读性与支架角度。SLS 尼龙适合功能测试；SLA 仅适合外观。不要把 3D 打印表面当量产外观标准。</p></article><article class="step"><span>02 PETITE SÉRIE 小批量</span><h3>真空复模或铝模</h3><p>50–500 台可用 PU 复模；约 1,000–10,000 台优先单腔铝模，开模快、改版成本低，适合验证市场。</p></article><article class="step"><span>03 PRODUCTION 量产</span><h3>两套 ABS 两板钢模</h3><p>前壳与背壳各用一副两板 ABS 模；孔阵沿开模方向排布，避免侧抽芯。扩散片采用一片小尺寸 PC 模件或首批激光切割 PC 片。</p></article></div>
+      <div class="format" style="margin-top:16px"><div class="card"><h3>Choix matière 材料选择</h3><p><strong>Coque : ABS mat teinté dans la masse, 1,8 à 2,0 mm 外壳：本色细纹 ABS，厚度 1.8 至 2.0 mm。</strong>这是最便宜、耐摔并且能直接出模的可见结构；只在前面、侧面或提手区域做通孔图案。<br><em>L’ABS est l’enveloppe économique et résistante. Les perforations sont limitées aux zones visibles de lumière et d’entrée d’air.</em></p><p><strong>Effet lumineux : une fine plaque PC givrée de 0,8 à 1,0 mm derrière les perforations 流光效果：孔阵背后的 0.8 至 1.0 mm 磨砂 PC 薄片。</strong>它不是整壳透光；一片平整的小扩散件就能把少量 LED 的光拉开、柔化，并产生图中“光从孔中流出”的效果。<br><em>Ce n’est pas une coque entièrement transparente. Une petite plaque diffuseuse plane étale et adoucit la lumière de quelques LED.</em></p><p><strong>Optique : film PET blanc réfléchissant, masque noir interne, trois LED RGB 光学结构：白色 PET 反射片、内部黑色遮光片、3 颗 RGB LED。</strong>反射片提高均匀度；遮光片防止显示屏漏光；3 颗 LED 已足以形成缓慢移动的单色波纹。<br><em>Le réflecteur améliore l’uniformité, le masque protège l’écran, et trois LED suffisent pour une vague lente de couleur unique.</em></p><p><strong>Patins : silicone ou TPE découpé standard 脚垫：标准冲切硅胶或 TPE。</strong>不为脚垫再开模，以背胶件完成防滑与减振。<br><em>Pas de moule dédié pour les patins.</em></p></div><div class="card"><h3>Règles DFM essentielles 必须守住的 DFM 规则</h3><p>壁厚统一 1.8 至 2.2 mm；拔模角至少 1.5°；孔阵按开模方向布置，孔的长宽比不过激；螺丝柱用筋加强，进气孔远离 MCU 热源。<br><em>Épaisseur 1,8 à 2,2 mm, dépouille d’au moins 1,5°, perforations dans le sens de démoulage, nervures autour des bossages et prises d’air loin du MCU.</em></p><p>首代避免：整壳透明 PC、双色共注、喷漆、电镀、超声焊死外壳、复杂活页支架。要把预算放在一片磨砂扩散片、反射片和软件渐变控制，而不是用更多 LED。<br><em>À éviter au premier lancement : PC transparent intégral, bi-injection, peinture, galvanisation, soudure ultrasonique et charnière complexe. Investir dans un diffuseur, un réflecteur et le pilotage logiciel, pas dans davantage de LED.</em></p></div></div>
+    </section>
+  </main>
+  <footer><div class="shell"><b>Air Air CO₂ Product Opportunity Brief</b><br>中法双语概念稿。建议量产前完成目标市场的安全、电磁兼容及无线认证评估。运费来源：<a href="https://www.laposte.fr/tarifs-postaux-colis" style="color:#a8def7">La Poste 2026</a> 与 <a href="https://www.mondialrelay.fr/envoi-de-colis/tarifs-expeditions/" style="color:#a8def7">Mondial Relay 2026</a>。<br><em>Document conceptuel bilingue. Vérifier sécurité, CEM et radio selon le marché visé avant production.</em></div></footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('p, .tag, .callout, td, .format-item').forEach((parent) => {
+        const fr = Array.from(parent.children).find((element) => element.tagName === 'EM');
+        if (!fr) return;
+        const nodes = Array.from(parent.childNodes);
+        const stop = nodes.indexOf(fr);
+        if (stop < 1) return;
+        const cn = document.createElement('span');
+        cn.className = 'cn-secondary';
+        nodes.slice(0, stop).forEach((node) => {
+          if (node.nodeName === 'BR') node.remove();
+          else cn.appendChild(node);
+        });
+        fr.remove();
+        fr.classList.add('fr-primary');
+        parent.prepend(fr, document.createTextNode(' '), cn);
+      });
+      document.querySelectorAll('.persona > h3 + .fr').forEach((fr) => {
+        const cn = fr.previousElementSibling;
+        fr.parentElement.insertBefore(fr, cn);
+        fr.parentElement.insertBefore(document.createTextNode(' '), cn);
+      });
+      document.querySelectorAll('.price').forEach((price) => {
+        const amount = price.textContent.match(/[0-9]+–[0-9]+ € TTC/);
+        if (amount) price.textContent = `Prix probable ${amount[0]} 最可能支付`;
+      });
+      const textNodes = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach((node) => {
+        node.nodeValue = node.nodeValue.replaceAll('·', ' ').replaceAll(' / ', ' ');
+      });
+    });
+  </script>
+</body>
+</html>
